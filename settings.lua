@@ -1,0 +1,17 @@
+data:extend{
+  {
+    type = "bool-setting",
+    name = "loader-snapping",
+    setting_type = "runtime-per-user",
+    default_value = true,
+    order = "loader-snapping",
+  },
+  {
+    type = "string-setting",
+    name = "loader-use-trains",
+    setting_type = "runtime-global",
+    default_value = "all trains",
+    allowed_values = {"disabled", "auto-only", "all trains"},
+    order = "loader-automatic",
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "entity":
+  [
+    ["faster-loader", "green-loader"],
+    ["extremely-fast-loader", "purple-loader"]
+  ],
+  "item":
+  [
+    ["faster-loader", "green-loader"],
+    ["extremely-fast-loader", "purple-loader"]
+  ]
+}
