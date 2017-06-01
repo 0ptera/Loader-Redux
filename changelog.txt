@@ -1,0 +1,41 @@
+0.2.8
+- fixed loaders snapping to belts 2 tiles away
+
+0.2.7
+- fixed update to 0.2.6 didn't correctly write wagon inventories to storage
+
+0.2.6
+- reduced ups when un-/loading wagons by Nexela
+- changed Loader Snapping warning Text include both mod name and mod display name
+
+0.2.5
+- fixed entity.neighbours changed in 0.15.13 
+
+0.2.4
+- snapping turns loaders away from non-belt entities
+
+0.2.3
+- fixed MP desync on starting new maps
+
+0.2.2
+- snapping enabled by default
+- replaced automatic only toggle with dropdown disabled, automatic-only, all trains
+- train events are only active when trains are enabled
+
+0.2.1
+- workaround of replacing loaders in script to rotate them is no longer necessary
+
+0.2.0
+- Rewritten Train loading/unloading by Nexela
+- On_Tick only runs if there are wagons to load/unload
+- Rewritten Loader snapping. Defaults to off
+- added toggle settings for loader snapping and Automatic mode trains
+
+0.1.2
+- switch to built in copy-paste functions
+
+0.1.1
+- fixed some errors with boblogistics
+
+0.1.0
+- initial release
