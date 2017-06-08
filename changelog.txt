@@ -1,3 +1,6 @@
+1.0.0
+- rebalanced recipes to match progression of belts and inserters
+
 0.2.8
 - fixed loaders snapping to belts 2 tiles away
 
