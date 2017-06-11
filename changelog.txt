@@ -1,3 +1,8 @@
+1.0.1
+- loaders snap to bot built belts
+- changed setting Snap Loaders from player to map setting so bots can use it
+- fixed typo in setting tooltip
+
 1.0.0
 - rebalanced recipes to match progression of belts and inserters
 

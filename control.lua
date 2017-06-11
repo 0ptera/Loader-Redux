@@ -5,7 +5,7 @@
 local snapping = require("snapping")
 
 local use_train = settings.global["loader-use-trains"].value
-
+local use_snapping = settings.global["loader-snapping"].value
 
 local function wagon_valid(wagon)
   if use_train == "disabled" or not (wagon and wagon.valid) then
@@ -166,6 +166,9 @@ end
 -- update mod runtime settings
 -- subscribe and initialize wagon-loader pairs if needed
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
+  if event.setting == "loader-snapping" then
+    use_snapping = settings.global["loader-snapping"].value
+  end
   if event.setting == "loader-use-trains" then  --Check to make sure our setting has changed
     use_train = settings.global["loader-use-trains"].value
     if use_train == "disabled" then
@@ -188,18 +191,17 @@ end)
 
 --Check for loaders around rotated entities that may need snapping
 script.on_event(defines.events.on_player_rotated_entity, function(event)
-  if settings.get_player_settings(event.player_index)["loader-snapping"].value then
+  if use_snapping then
     snapping.check_for_loaders(event)
   end
 end)
 
 --When bulding, if its a loader check for snapping and snap, if snapped or not snapping then add to list
 --Check anything else built and check for loaders around it they may need correcting.
-script.on_event(defines.events.on_built_entity, function(event)
+function EntityBuilt(event)
   local entity = event.created_entity
-  local can_snap = settings.get_player_settings(event.player_index)["loader-snapping"].value
   if entity.type == "loader" then
-    if can_snap then
+    if use_snapping then
       snapping.snap_loader(entity, event)
     end
     local wagons = {
@@ -212,10 +214,12 @@ script.on_event(defines.events.on_built_entity, function(event)
     for _, wagon in pairs(entity.surface.find_entities_filtered(wagons)) do
       find_loader(wagon, entity)
     end
-  elseif can_snap then
+  elseif use_snapping then
     snapping.check_for_loaders(event)
   end
-end)
+end
+script.on_event(defines.events.on_built_entity, EntityBuilt)
+script.on_event(defines.events.on_robot_built_entity, EntityBuilt)
 
 --Remove saved loaders when they die/get mined
 script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)

@@ -2,7 +2,7 @@ data:extend{
   {
     type = "bool-setting",
     name = "loader-snapping",
-    setting_type = "runtime-per-user",
+    setting_type = "runtime-global",
     default_value = true,
     order = "loader-snapping",
   },
