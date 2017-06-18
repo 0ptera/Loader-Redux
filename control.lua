@@ -7,23 +7,30 @@ local snapping = require("snapping")
 local use_train = settings.global["loader-use-trains"].value
 local use_snapping = settings.global["loader-snapping"].value
 
-local function wagon_valid(wagon)
-  if use_train == "disabled" or not (wagon and wagon.valid) then
-    return false
-  end
-  if wagon.train.state == defines.train_state.wait_station then
-    return true
-  elseif use_train == "all trains" and wagon.train.state == defines.train_state.manual_control and wagon.train.speed == 0 then
-    return true
-  end
-  return false
+local TRAIN_AUTO = defines.train_state.wait_station
+local TRAIN_MANUAL = defines.train_state.manual_control
+
+local wagon_valid
+local wagon_validators = {
+   ["disabled"] = function (wagon)
+      return false
+   end,
+   ["auto-only"] = function (wagon)
+      local train = wagon and wagon.valid and wagon.train
+      return train and train.state == TRAIN_AUTO
+   end,
+   ["all trains"] = function (wagon)
+      local train = wagon and wagon.valid and wagon.train
+      local train_state = train and train.state
+      return train_state == TRAIN_AUTO or train_state == TRAIN_MANUAL and train.speed == 0
+   end
+}
+
+local function select_validator()
+   wagon_valid = wagon_validators[use_train]
 end
 
-
-local function loader_active(loader_data)
-  local loader, dir = loader_data.loader, loader_data.direction
-  return ((loader.loader_type == "output" and loader.direction == dir) or (loader.loader_type == "input" and loader.direction == (dir + 4 ) % 8))
-end
+select_validator()
 
 local function get_filters(entity)
   local filters = {}
@@ -38,53 +45,75 @@ local function get_filters(entity)
   return filtered and filters
 end
 
---loader work
-local function loader_work(loader_data)
-  local loader, wagon = loader_data.loader, loader_data.wagon_inv
-  local filters
-  for i=1, 2 do
-    local line = loader_data[i]
-    if loader.loader_type == "output" then
-      if not wagon.is_empty() and line.can_insert_at_back() then
-        filters = filters or get_filters(loader)
-        if filters then
-          for filter in pairs(filters) do
-            if wagon.remove({name = filter, count = 1}) == 1 then
-              line.insert_at_back({name = filter, count = 1})
-              break
+local function wagon_transfer(wagon_data)
+   local wagon = wagon_data.wagon_inv
+   for _, loader_data in pairs(wagon_data.loaders) do
+      local loader = loader_data.loader
+      local line1, line2 = loader_data[1], loader_data[2]
+
+      if loader.loader_type == "output" then
+         local filters = get_filters(loader)
+         if filters then
+            if not wagon.is_empty() and line1.can_insert_at_back() then
+               for name in pairs(filters) do
+                  if wagon.remove({ name = name }) == 1 then
+                     line1.insert_at_back({ name = name })
+                     break
+                  end
+               end
             end
-          end
-        else
-          local name = next(wagon.get_contents())
-          if name then
-            wagon.remove({name = name, count = 1})
-            line.insert_at_back({name = name, count = 1})
-          end
-        end
+            if not wagon.is_empty() and line2.can_insert_at_back() then
+               for name in pairs(filters) do
+                  if wagon.remove({ name = name }) == 1 then
+                      line2.insert_at_back({ name = name })
+                      break
+                  end
+               end
+            end
+         else
+            local name = next(wagon.get_contents())
+            if name and line1.insert_at_back({ name = name }) then
+               wagon.remove({ name = name })
+            end
+            name = next(wagon.get_contents())
+            if name and line2.insert_at_back({ name = name }) then
+               wagon.remove({ name = name })
+            end
+         end
+      elseif loader.loader_type == "input" then
+         for name in pairs(line1.get_contents()) do
+            if wagon.insert({ name = name }) == 1 then
+               line1.remove_item({ name = name })
+               break
+            end
+         end
+         for name in pairs(line2.get_contents()) do
+            if wagon.insert({ name = name }) == 1 then
+               line2.remove_item({ name = name })
+               break
+            end
+         end
       end
-    elseif loader.loader_type=="input" then
-      for name in pairs(line.get_contents()) do
-        if wagon.insert({name = name, count = 1}) == 1 then
-          line.remove_item({name = name, count = 1})
-          break
-        end
-      end
-    end
-  end
+   end
 end
 
 --Find loaders based on train orientation and state
 local function find_loader(wagon, ent)
-  global.loaders = global.loaders or {}
   if wagon_valid(wagon) then
+    w_num = wagon.unit_number
     if wagon.orientation == 0 or wagon.orientation == 0.5 then
       local west = {type = "loader", area = {{wagon.position.x-1.5, wagon.position.y-2.2}, {wagon.position.x-0.5, wagon.position.y+2.2}}}
       for _, loader in pairs(wagon.surface.find_entities_filtered(west)) do
         if (ent and loader == ent) or not ent then
-          global.loaders[loader.unit_number] = {
-            loader = loader,
+          local l_num = loader.unit_number
+          global.loader_wagon_map[l_num] = w_num
+          global.wagons[w_num] = global.wagons[w_num] or {
             wagon = wagon,
             wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+            loaders = {}
+          }
+          global.wagons[w_num].loaders[l_num] = {
+            loader = loader,
             direction = 6,
             [1] = loader.get_transport_line(1),
             [2] = loader.get_transport_line(2)
@@ -94,10 +123,15 @@ local function find_loader(wagon, ent)
       local east = {type = "loader",area = {{wagon.position.x+0.5, wagon.position.y-2.2}, {wagon.position.x+1.5, wagon.position.y+2.2}}}
       for _, loader in pairs(wagon.surface.find_entities_filtered(east)) do
         if (ent and loader == ent) or not ent then
-          global.loaders[loader.unit_number] = {
-            loader = loader,
+          local l_num = loader.unit_number
+          global.loader_wagon_map[l_num] = w_num
+          global.wagons[w_num] = global.wagons[w_num] or {
             wagon = wagon,
             wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+            loaders = {}
+          }
+          global.wagons[w_num].loaders[l_num] = {
+            loader = loader,
             direction = 2,
             [1] = loader.get_transport_line(1),
             [2] = loader.get_transport_line(2)
@@ -108,10 +142,15 @@ local function find_loader(wagon, ent)
       local north = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y-1.5}, {wagon.position.x+2.2, wagon.position.y-0.5}}}
       for _, loader in pairs(wagon.surface.find_entities_filtered(north)) do
         if (ent and loader == ent) or not ent then
-          global.loaders[loader.unit_number] = {
-            loader = loader,
+          local l_num = loader.unit_number
+          global.loader_wagon_map[l_num] = w_num
+          global.wagons[w_num] = global.wagons[w_num] or {
             wagon = wagon,
             wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+            loaders = {}
+          }
+          global.wagons[w_num].loaders[l_num] = {
+            loader = loader,
             direction = 0,
             [1] = loader.get_transport_line(1),
             [2] = loader.get_transport_line(2)
@@ -121,10 +160,15 @@ local function find_loader(wagon, ent)
       local south = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y+0.5}, {wagon.position.x+2.2, wagon.position.y+1.5}}}
       for _, loader in pairs(wagon.surface.find_entities_filtered(south)) do
         if (ent and loader == ent) or not ent then
-          global.loaders[loader.unit_number] = {
-            loader = loader,
+          local l_num = loader.unit_number
+          global.loader_wagon_map[l_num] = w_num
+          global.wagons[w_num] = global.wagons[w_num] or {
             wagon = wagon,
             wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+            loaders = {}
+          }
+          global.wagons[w_num].loaders[l_num] = {
+            loader = loader,
             direction = 4,
             [1] = loader.get_transport_line(1),
             [2] = loader.get_transport_line(2)
@@ -133,26 +177,63 @@ local function find_loader(wagon, ent)
       end
     end
   end
-  if next(global.loaders) then
+  if next(global.wagons) then
     script.on_event(defines.events.on_tick, ticker)
   end
 end
 
 --Run on_tick only when there's something to do.
+local active_directions = {
+   output = {
+      [0] = 0,
+      [2] = 2,
+      [4] = 4,
+      [6] = 6
+   },
+   input = {
+      [0] = 4,
+      [2] = 6,
+      [4] = 0,
+      [6] = 2
+   }
+}
+local function loader_active(loader_data)
+  local loader = loader_data.loader
+  return loader and loader.valid and active_directions[loader.loader_type][loader.direction] == loader_data.direction
+end
+
+local function check_wagon_loaders(wagon_data)
+   local active_loader = false
+   if wagon_valid(wagon_data.wagon) then
+      for num, loader_data in pairs(wagon_data.loaders) do
+         if loader_active(loader_data) then
+            active_loader = true
+         else
+            global.loader_wagon_map[num] = nil
+            wagon_data.loaders[num] = nil
+         end
+      end
+   else
+      for num in pairs(wagon_data.loaders) do
+         global.loader_wagon_map[num] = nil
+      end
+   end
+   return active_loader
+end
+
 function ticker(event)
-  if global.loaders == nil or next(global.loaders) == nil then
+  if not global.wagons or not next(global.wagons) then
     script.on_event(defines.events.on_tick, nil)
   end
 
-  for num, data in pairs(global.loaders) do
-    if data.loader and data.loader.valid and wagon_valid(data.wagon) and loader_active(data) then
-      loader_work(data)
+  for num, data in pairs(global.wagons) do
+    if check_wagon_loaders(data) then
+      wagon_transfer(data)
     else
-      global.loaders[num] = nil
+      global.wagons[num] = nil
     end
   end
 end
-
 
 --When trains are enabled update on train state changes.
 --If it moves or switches to manual then stop all loaders and clear.
@@ -162,7 +243,6 @@ function train_update(event)
   end
 end
 
-
 -- update mod runtime settings
 -- subscribe and initialize wagon-loader pairs if needed
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
@@ -171,14 +251,15 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
   end
   if event.setting == "loader-use-trains" then  --Check to make sure our setting has changed
     use_train = settings.global["loader-use-trains"].value
+    select_validator()
+    global.wagons = {}
+    global.loader_wagon_map = {}
     if use_train == "disabled" then
       script.on_event(defines.events.on_train_changed_state, nil)
       script.on_event(defines.events.on_train_created, nil)
-      global.loaders = {}
     else
       script.on_event(defines.events.on_train_changed_state, train_update)
       script.on_event(defines.events.on_train_created, train_update)
-      global.loaders = {}
       for _, surface in pairs(game.surfaces) do
         for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
           find_loader(wagon)
@@ -187,7 +268,6 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
     end
   end
 end)
-
 
 --Check for loaders around rotated entities that may need snapping
 script.on_event(defines.events.on_player_rotated_entity, function(event)
@@ -221,17 +301,34 @@ end
 script.on_event(defines.events.on_built_entity, EntityBuilt)
 script.on_event(defines.events.on_robot_built_entity, EntityBuilt)
 
---Remove saved loaders when they die/get mined
+--Remove loader/wagon connections when they die/get mined
 script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)
-  if event.entity.unit_number then
-    global.loaders[event.entity.unit_number] = nil
+  local num = event.entity.unit_number
+  if num then
+    local wagon = global.wagons[num]
+    if wagon then
+      for l_num in pairs(wagon.loaders) do
+         global.loader_wagon_map[l_num] = nil
+      end
+      global.wagons[num] = nil
+    else
+      local w_num = global.loader_wagon_map[num]
+      if w_num then
+         wagon = global.wagons[w_num]
+         if wagon and not check_wagon_loaders(wagon) then
+            global.wagons[w_num] = nil
+         end
+      end
+    end
   end
 end)
 
 ---- Bootstrap ----
 do
 local function init_events()
-  if global.loaders and next(global.loaders) then
+   global.wagons = global.wagons or {}
+   global.loader_wagon_map = global.loader_wagon_map or {}
+  if next(global.wagons) then
     script.on_event(defines.events.on_tick, ticker)
   end
   if use_train == "disabled" then
@@ -245,7 +342,6 @@ end
 
 --On first install scan the map and find any loaders that might need work!
 script.on_init(function()
-  global.loaders = {}
   init_events()
   if use_train ~= "disabled" then
     for _, surface in pairs(game.surfaces) do
@@ -262,24 +358,27 @@ end)
 
 script.on_configuration_changed(function(data)
   if data and data.mod_changes["LoaderRedux"] then
-    for num, loader in pairs(global.loaders) do
-      if loader.wagon and loader.wagon.valid and loader.loader and loader.loader.valid then
-        global.loaders[num][1] = loader.loader.get_transport_line(1)
-        global.loaders[num][2] = loader.loader.get_transport_line(2)
-        global.loaders[num].wagon_inv = loader.wagon.get_inventory(defines.inventory.cargo_wagon)
-      else
-        global.loaders[num] = nil
-      end
+    if global.loaders then
+       for num, loader_data in pairs(global.loaders) do
+         local loader, wagon = loader_data.loader, loader_data.wagon
+         if wagon and wagon.valid and loader and loader.valid then
+             w_num = wagon.unit_number
+             global.loader_wagon_map[num] = w_num
+             global.wagons[w_num] = global.wagons[w_num] or {
+               wagon = wagon,
+               wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+               loaders = {}
+             }
+             global.wagons[w_num].loaders[num] = {
+               loader = loader,
+               direction = loader_data.direction,
+               [1] = loader.get_transport_line(1),
+               [2] = loader.get_transport_line(2)
+             }
+         end
+       end
     end
     init_events()
   end
 end)
 end
-
--- remote.add_interface("loaders",
-  -- {
-    -- write_global = function()
-      -- game.write_file("Loaders/global.lua", serpent.block(global, {nocode=true, comment=false, sparse=false}))
-    -- end
-  -- }
--- )
