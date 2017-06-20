@@ -1,3 +1,6 @@
+1.1.0
+- Rewritten Train loading/unloading by ReverseStateMonad Pull #3
+
 1.0.1
 - loaders snap to bot built belts
 - changed setting Snap Loaders from player to map setting so bots can use it
@@ -17,7 +20,7 @@
 - changed Loader Snapping warning Text include both mod name and mod display name
 
 0.2.5
-- fixed entity.neighbours changed in 0.15.13 
+- fixed entity.neighbours changed in 0.15.13
 
 0.2.4
 - snapping turns loaders away from non-belt entities

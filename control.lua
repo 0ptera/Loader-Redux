@@ -7,9 +7,6 @@ local snapping = require("snapping")
 local use_train = settings.global["loader-use-trains"].value
 local use_snapping = settings.global["loader-snapping"].value
 
-local TRAIN_AUTO = defines.train_state.wait_station
-local TRAIN_MANUAL = defines.train_state.manual_control
-
 local wagon_valid
 local wagon_validators = {
    ["disabled"] = function (wagon)
@@ -17,12 +14,12 @@ local wagon_validators = {
    end,
    ["auto-only"] = function (wagon)
       local train = wagon and wagon.valid and wagon.train
-      return train and train.state == TRAIN_AUTO
+      return train and train.state == defines.train_state.wait_station
    end,
    ["all trains"] = function (wagon)
       local train = wagon and wagon.valid and wagon.train
       local train_state = train and train.state
-      return train_state == TRAIN_AUTO or train_state == TRAIN_MANUAL and train.speed == 0
+      return train_state == defines.train_state.wait_station or train_state == defines.train_state.manual_control and train.speed == 0
    end
 }
 
@@ -278,7 +275,7 @@ end)
 
 --When bulding, if its a loader check for snapping and snap, if snapped or not snapping then add to list
 --Check anything else built and check for loaders around it they may need correcting.
-function EntityBuilt(event)
+script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
   local entity = event.created_entity
   if entity.type == "loader" then
     if use_snapping then
@@ -297,9 +294,7 @@ function EntityBuilt(event)
   elseif use_snapping then
     snapping.check_for_loaders(event)
   end
-end
-script.on_event(defines.events.on_built_entity, EntityBuilt)
-script.on_event(defines.events.on_robot_built_entity, EntityBuilt)
+end)
 
 --Remove loader/wagon connections when they die/get mined
 script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)
@@ -325,12 +320,8 @@ end)
 
 ---- Bootstrap ----
 do
-local function init_events()
-   global.wagons = global.wagons or {}
-   global.loader_wagon_map = global.loader_wagon_map or {}
-  if next(global.wagons) then
-    script.on_event(defines.events.on_tick, ticker)
-  end
+script.on_load(function()
+  select_validator()
   if use_train == "disabled" then
     script.on_event(defines.events.on_train_changed_state, nil)
     script.on_event(defines.events.on_train_created, nil)
@@ -338,47 +329,55 @@ local function init_events()
     script.on_event(defines.events.on_train_changed_state, train_update)
     script.on_event(defines.events.on_train_created, train_update)
   end
-end
 
---On first install scan the map and find any loaders that might need work!
+  if global.wagons and next(global.wagons) then
+    script.on_event(defines.events.on_tick, ticker)
+  end
+end)
+
+-- On first install scan the map and find any loaders that might need work!
 script.on_init(function()
-  init_events()
-  if use_train ~= "disabled" then
+  select_validator()
+  global.wagons = {}
+  global.loader_wagon_map = {}
+  if use_train == "disabled" then
+    script.on_event(defines.events.on_train_changed_state, nil)
+    script.on_event(defines.events.on_train_created, nil)
+  else
+    script.on_event(defines.events.on_train_changed_state, train_update)
+    script.on_event(defines.events.on_train_created, train_update)
     for _, surface in pairs(game.surfaces) do
       for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
         find_loader(wagon)
       end
     end
   end
+
+  if next(global.wagons) then
+    script.on_event(defines.events.on_tick, ticker)
+  end
 end)
 
-script.on_load(function()
-  init_events()
-end)
-
+-- rescan all loader-wagon connections in case changing mods removed some wagons
 script.on_configuration_changed(function(data)
-  if data and data.mod_changes["LoaderRedux"] then
-    if global.loaders then
-       for num, loader_data in pairs(global.loaders) do
-         local loader, wagon = loader_data.loader, loader_data.wagon
-         if wagon and wagon.valid and loader and loader.valid then
-             w_num = wagon.unit_number
-             global.loader_wagon_map[num] = w_num
-             global.wagons[w_num] = global.wagons[w_num] or {
-               wagon = wagon,
-               wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
-               loaders = {}
-             }
-             global.wagons[w_num].loaders[num] = {
-               loader = loader,
-               direction = loader_data.direction,
-               [1] = loader.get_transport_line(1),
-               [2] = loader.get_transport_line(2)
-             }
-         end
-       end
+  select_validator()
+  global.wagons = {}
+  global.loader_wagon_map = {}
+  if use_train == "disabled" then
+    script.on_event(defines.events.on_train_changed_state, nil)
+    script.on_event(defines.events.on_train_created, nil)
+  else
+    script.on_event(defines.events.on_train_changed_state, train_update)
+    script.on_event(defines.events.on_train_created, train_update)
+    for _, surface in pairs(game.surfaces) do
+      for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
+        find_loader(wagon)
+      end
     end
-    init_events()
+  end
+
+  if next(global.wagons) then
+    script.on_event(defines.events.on_tick, ticker)
   end
 end)
 end
