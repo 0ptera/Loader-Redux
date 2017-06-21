@@ -27,8 +27,6 @@ local function select_validator()
 	wagon_valid = wagon_validators[use_train]
 end
 
-select_validator()
-
 local function get_filters(entity)
 	local filters = {}
 	local filtered = false
@@ -97,89 +95,85 @@ end
 --Find loaders based on train orientation and state
 local function find_loader(wagon, ent)
 	if wagon_valid(wagon) then
-	w_num = wagon.unit_number
-	if wagon.orientation == 0 or wagon.orientation == 0.5 then
-		local west = {type = "loader", area = {{wagon.position.x-1.5, wagon.position.y-2.2}, {wagon.position.x-0.5, wagon.position.y+2.2}}}
-		for _, loader in pairs(wagon.surface.find_entities_filtered(west)) do
-			if (ent and loader == ent) or not ent then
-			local l_num = loader.unit_number
-			global.loader_wagon_map[l_num] = w_num
-			global.wagons[w_num] = global.wagons[w_num] or {
-				wagon = wagon,
-				wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
-				loaders = {}
-			}
-			global.wagons[w_num].loaders[l_num] = {
-				loader = loader,
-				direction = 6,
-				[1] = loader.get_transport_line(1),
-				[2] = loader.get_transport_line(2)
-			}
+		w_num = wagon.unit_number
+		if wagon.orientation == 0 or wagon.orientation == 0.5 then
+			local west = {type = "loader", area = {{wagon.position.x-1.5, wagon.position.y-2.2}, {wagon.position.x-0.5, wagon.position.y+2.2}}}
+			for _, loader in pairs(wagon.surface.find_entities_filtered(west)) do
+				if (ent and loader == ent) or not ent then
+				local l_num = loader.unit_number
+				global.loader_wagon_map[l_num] = w_num
+				global.wagons[w_num] = global.wagons[w_num] or {
+					wagon = wagon,
+					wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+					loaders = {}
+				}
+				global.wagons[w_num].loaders[l_num] = {
+					loader = loader,
+					direction = 6,
+					[1] = loader.get_transport_line(1),
+					[2] = loader.get_transport_line(2)
+				}
+				end
+			end
+			local east = {type = "loader",area = {{wagon.position.x+0.5, wagon.position.y-2.2}, {wagon.position.x+1.5, wagon.position.y+2.2}}}
+			for _, loader in pairs(wagon.surface.find_entities_filtered(east)) do
+				if (ent and loader == ent) or not ent then
+				local l_num = loader.unit_number
+				global.loader_wagon_map[l_num] = w_num
+				global.wagons[w_num] = global.wagons[w_num] or {
+					wagon = wagon,
+					wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+					loaders = {}
+				}
+				global.wagons[w_num].loaders[l_num] = {
+					loader = loader,
+					direction = 2,
+					[1] = loader.get_transport_line(1),
+					[2] = loader.get_transport_line(2)
+				}
+				end
+			end
+		elseif wagon.orientation==0.25 or wagon.orientation==0.75 then
+			local north = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y-1.5}, {wagon.position.x+2.2, wagon.position.y-0.5}}}
+			for _, loader in pairs(wagon.surface.find_entities_filtered(north)) do
+				if (ent and loader == ent) or not ent then
+				local l_num = loader.unit_number
+				global.loader_wagon_map[l_num] = w_num
+				global.wagons[w_num] = global.wagons[w_num] or {
+					wagon = wagon,
+					wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+					loaders = {}
+				}
+				global.wagons[w_num].loaders[l_num] = {
+					loader = loader,
+					direction = 0,
+					[1] = loader.get_transport_line(1),
+					[2] = loader.get_transport_line(2)
+				}
+				end
+			end
+			local south = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y+0.5}, {wagon.position.x+2.2, wagon.position.y+1.5}}}
+			for _, loader in pairs(wagon.surface.find_entities_filtered(south)) do
+				if (ent and loader == ent) or not ent then
+				local l_num = loader.unit_number
+				global.loader_wagon_map[l_num] = w_num
+				global.wagons[w_num] = global.wagons[w_num] or {
+					wagon = wagon,
+					wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+					loaders = {}
+				}
+				global.wagons[w_num].loaders[l_num] = {
+					loader = loader,
+					direction = 4,
+					[1] = loader.get_transport_line(1),
+					[2] = loader.get_transport_line(2)
+				}
+				end
 			end
 		end
-		local east = {type = "loader",area = {{wagon.position.x+0.5, wagon.position.y-2.2}, {wagon.position.x+1.5, wagon.position.y+2.2}}}
-		for _, loader in pairs(wagon.surface.find_entities_filtered(east)) do
-			if (ent and loader == ent) or not ent then
-			local l_num = loader.unit_number
-			global.loader_wagon_map[l_num] = w_num
-			global.wagons[w_num] = global.wagons[w_num] or {
-				wagon = wagon,
-				wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
-				loaders = {}
-			}
-			global.wagons[w_num].loaders[l_num] = {
-				loader = loader,
-				direction = 2,
-				[1] = loader.get_transport_line(1),
-				[2] = loader.get_transport_line(2)
-			}
-			end
-		end
-	elseif wagon.orientation==0.25 or wagon.orientation==0.75 then
-		local north = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y-1.5}, {wagon.position.x+2.2, wagon.position.y-0.5}}}
-		for _, loader in pairs(wagon.surface.find_entities_filtered(north)) do
-			if (ent and loader == ent) or not ent then
-			local l_num = loader.unit_number
-			global.loader_wagon_map[l_num] = w_num
-			global.wagons[w_num] = global.wagons[w_num] or {
-				wagon = wagon,
-				wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
-				loaders = {}
-			}
-			global.wagons[w_num].loaders[l_num] = {
-				loader = loader,
-				direction = 0,
-				[1] = loader.get_transport_line(1),
-				[2] = loader.get_transport_line(2)
-			}
-			end
-		end
-		local south = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y+0.5}, {wagon.position.x+2.2, wagon.position.y+1.5}}}
-		for _, loader in pairs(wagon.surface.find_entities_filtered(south)) do
-			if (ent and loader == ent) or not ent then
-			local l_num = loader.unit_number
-			global.loader_wagon_map[l_num] = w_num
-			global.wagons[w_num] = global.wagons[w_num] or {
-				wagon = wagon,
-				wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
-				loaders = {}
-			}
-			global.wagons[w_num].loaders[l_num] = {
-				loader = loader,
-				direction = 4,
-				[1] = loader.get_transport_line(1),
-				[2] = loader.get_transport_line(2)
-			}
-			end
-		end
-	end
-	end
-	if next(global.wagons) then
-	script.on_event(defines.events.on_tick, ticker)
 	end
 end
 
---Run on_tick only when there's something to do.
 local active_directions = {
 	output = {
 		[0] = 0,
@@ -218,11 +212,7 @@ local function check_wagon_loaders(wagon_data)
 	return active_loader
 end
 
-function ticker(event)
-	if not global.wagons or not next(global.wagons) then
-		script.on_event(defines.events.on_tick, nil)
-	end
-
+function OnTick(event)
 	for num, wagon_data in pairs(global.wagons) do
 		if check_wagon_loaders(wagon_data) then
 			wagon_transfer(wagon_data)
@@ -234,37 +224,17 @@ end
 
 --When trains are enabled update on train state changes.
 --If it moves or switches to manual then stop all loaders and clear.
-function train_update(event)
+function OnTrainUpdate(event)
 	for _, wagon in pairs(event.train.cargo_wagons) do
 		find_loader(wagon, nil)
 	end
+	if next(global.wagons) then
+		script.on_event(defines.events.on_tick, OnTick)
+	else
+		script.on_event(defines.events.on_tick, nil)
+	end
 end
 
--- update mod runtime settings
--- subscribe and initialize wagon-loader pairs if needed
-script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-	if event.setting == "loader-snapping" then
-		use_snapping = settings.global["loader-snapping"].value
-	end
-	if event.setting == "loader-use-trains" then	--Check to make sure our setting has changed
-		use_train = settings.global["loader-use-trains"].value
-		select_validator()
-		global.wagons = {}
-		global.loader_wagon_map = {}
-		if use_train == "disabled" then
-			script.on_event(defines.events.on_train_changed_state, nil)
-			script.on_event(defines.events.on_train_created, nil)
-		else
-			script.on_event(defines.events.on_train_changed_state, train_update)
-			script.on_event(defines.events.on_train_created, train_update)
-			for _, surface in pairs(game.surfaces) do
-				for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
-					find_loader(wagon)
-				end
-			end
-		end
-	end
-end)
 
 --Check for loaders around rotated entities that may need snapping
 script.on_event(defines.events.on_player_rotated_entity, function(event)
@@ -291,48 +261,94 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 		for _, wagon in pairs(entity.surface.find_entities_filtered(wagons)) do
 			find_loader(wagon, entity)
 		end
+		if next(global.wagons) then
+			script.on_event(defines.events.on_tick, OnTick)
+		else
+			script.on_event(defines.events.on_tick, nil)
+		end
 	elseif use_snapping then
 		snapping.check_for_loaders(event)
 	end
 end)
 
 --Remove loader/wagon connections when they die/get mined
-script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)
-	local num = event.entity.unit_number
-	if num then
-		local wagon = global.wagons[num]
+function OnEntityRemoved(event)
+-- script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)
+	local entity = event.entity
+	if entity.type == "cargo-wagon" then
+		local wagon = global.wagons[entity.unit_number]
 		if wagon then
 			for l_num in pairs(wagon.loaders) do
 				global.loader_wagon_map[l_num] = nil
 			end
-			global.wagons[num] = nil
+			global.wagons[entity.unit_number] = nil
+		end
+	elseif entity.type == "loader" then
+		local w_num = global.loader_wagon_map[entity.unit_number]
+		if w_num then
+			wagon = global.wagons[w_num]
+			if wagon and not check_wagon_loaders(wagon) then
+				global.wagons[w_num] = nil
+			end
+		end
+	end
+end
+
+
+-- update mod runtime settings
+-- change event subsciptions and initialize wagon-loader pairs as needed
+script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
+	if event.setting == "loader-snapping" then
+		use_snapping = settings.global["loader-snapping"].value
+	end
+	if event.setting == "loader-use-trains" then	--Check to make sure our setting has changed
+		use_train = settings.global["loader-use-trains"].value
+		select_validator()
+		global.wagons = {}
+		global.loader_wagon_map = {}
+		if use_train == "disabled" then
+			script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, nil)
+			script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, nil)
+			script.on_event(defines.events.on_tick, nil)
 		else
-			local w_num = global.loader_wagon_map[num]
-			if w_num then
-				wagon = global.wagons[w_num]
-				if wagon and not check_wagon_loaders(wagon) then
-						global.wagons[w_num] = nil
+			script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, OnTrainUpdate)
+			script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
+			for _, surface in pairs(game.surfaces) do
+				for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
+					find_loader(wagon)
 				end
 			end
+			if next(global.wagons) then
+				script.on_event(defines.events.on_tick, OnTick)
+			else
+				script.on_event(defines.events.on_tick, nil)
+			end 
 		end
 	end
 end)
 
+
 ---- Bootstrap ----
 do
+function init_events()
+	if use_train == "disabled" then
+		script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, nil)
+		script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, nil)
+		script.on_event(defines.events.on_tick, nil)
+	else
+		script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, OnTrainUpdate)
+		script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
+		if global.wagons and next(global.wagons) then
+			script.on_event(defines.events.on_tick, OnTick)
+		else
+			script.on_event(defines.events.on_tick, nil)
+		end
+	end
+end
+
 script.on_load(function()
 	select_validator()
-	if use_train == "disabled" then
-		script.on_event(defines.events.on_train_changed_state, nil)
-		script.on_event(defines.events.on_train_created, nil)
-	else
-		script.on_event(defines.events.on_train_changed_state, train_update)
-		script.on_event(defines.events.on_train_created, train_update)
-	end
-
-	if global.wagons and next(global.wagons) then
-		script.on_event(defines.events.on_tick, ticker)
-	end
+	init_events()
 end)
 
 -- On first install scan the map and find any loaders that might need work!
@@ -340,22 +356,14 @@ script.on_init(function()
 	select_validator()
 	global.wagons = {}
 	global.loader_wagon_map = {}
-	if use_train == "disabled" then
-		script.on_event(defines.events.on_train_changed_state, nil)
-		script.on_event(defines.events.on_train_created, nil)
-	else
-		script.on_event(defines.events.on_train_changed_state, train_update)
-		script.on_event(defines.events.on_train_created, train_update)
+	if use_train ~= "disabled" then
 		for _, surface in pairs(game.surfaces) do
 			for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
 				find_loader(wagon)
 			end
 		end
 	end
-
-	if next(global.wagons) then
-		script.on_event(defines.events.on_tick, ticker)
-	end
+	init_events()
 end)
 
 -- rescan all loader-wagon connections in case changing mods removed some wagons
@@ -363,21 +371,13 @@ script.on_configuration_changed(function(data)
 	select_validator()
 	global.wagons = {}
 	global.loader_wagon_map = {}
-	if use_train == "disabled" then
-		script.on_event(defines.events.on_train_changed_state, nil)
-		script.on_event(defines.events.on_train_created, nil)
-	else
-		script.on_event(defines.events.on_train_changed_state, train_update)
-		script.on_event(defines.events.on_train_created, train_update)
+	if use_train ~= "disabled" then
 		for _, surface in pairs(game.surfaces) do
 			for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
 				find_loader(wagon)
 			end
 		end
 	end
-
-	if next(global.wagons) then
-		script.on_event(defines.events.on_tick, ticker)
-	end
+	init_events()
 end)
 end
