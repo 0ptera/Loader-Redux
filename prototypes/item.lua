@@ -14,14 +14,19 @@ function make_loader_item(name,order)
 end
 
 data:extend({
-make_loader_item("loader","d-a"),
-make_loader_item("fast-loader","d-b"),
-make_loader_item("express-loader","d-c"),
+  make_loader_item("loader","d-a"),
+  make_loader_item("fast-loader","d-b"),
+  make_loader_item("express-loader","d-c"),
 })
 
-if data.raw["item"]["green-transport-belt"] then
-data:extend({
-make_loader_item("green-loader","d-a"),
-make_loader_item("purple-loader","d-a"),
-})
+if data.raw.item["green-transport-belt"] then
+  data:extend({
+    make_loader_item("green-loader","d-d"),
+  })
+end
+
+if data.raw.item["purple-transport-belt"] then
+  data:extend({  
+    make_loader_item("purple-loader","d-e"),
+  })
 end

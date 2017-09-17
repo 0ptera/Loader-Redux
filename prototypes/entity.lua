@@ -19,7 +19,7 @@ for name,speed in pairs(loaders) do
 	end
 end
 
-if data.raw["item"]["green-transport-belt"] then
+if data.raw.item["green-transport-belt"] then
 data:extend({
 	{
     type = "loader",
@@ -76,6 +76,11 @@ data:extend({
     },
     ending_patch = ending_patch_prototype
   },
+})
+end
+
+if data.raw.item["purple-transport-belt"] then
+data:extend({
   {
     type = "loader",
     name = "purple-loader",

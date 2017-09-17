@@ -1,3 +1,6 @@
+1.1.2
+- disabling belts in bobs disables respective loader #4
+
 1.1.1
 - deconstruction events trigger only when train usage is auto or all trains
 - fixed: on_tick runs only if there are wagons to load/unload (was broken in 1.1.0)

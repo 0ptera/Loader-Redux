@@ -78,7 +78,7 @@ data:extend({
 	},
 })
 
-local bobLogistic4 = data.raw["technology"]["bob-logistics-4"]
+local bobLogistic4 = data.raw.technology["bob-logistics-4"]
 if bobLogistic4 then
 data:extend({
    {
@@ -99,8 +99,9 @@ data:extend({
   }
 })
 end
-local bobLogistic5 = data.raw["technology"]["bob-logistics-5"]
-if bobLogistic4 then
+
+local bobLogistic5 = data.raw.technology["bob-logistics-5"]
+if bobLogistic5 then
 data:extend({
   {
     type = "technology",
@@ -115,7 +116,7 @@ data:extend({
       }
     },
     prerequisites = {"bob-logistics-5"},
-    unit = bobLogistic5.unit,    
+    unit = bobLogistic5.unit,
     order = "a-f-e",
   }
 })
