@@ -5,6 +5,7 @@ function make_loader_item(name,order)
 		type="item",
 		name=name,
 		icon="__LoaderRedux__/graphics/icon/"..name..".png",
+    icon_size = 32,
 		flags={"goes-to-quickbar"},
 		subgroup=subgroup,
 		order=order,

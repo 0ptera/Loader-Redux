@@ -14,6 +14,7 @@ for name,speed in pairs(loaders) do
     data.raw["loader"][name].structure.direction_out.sheet.height = 128
     data.raw["loader"][name].structure.direction_out.sheet.y = 128
 		data.raw["loader"][name].icon = "__LoaderRedux__/graphics/icon/"..name..".png"
+    data.raw["loader"][name].icon_size = 32
     data.raw["loader"][name].speed = speed
 		data.raw["loader"][name].flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
 	end
@@ -25,6 +26,7 @@ data:extend({
     type = "loader",
     name = "green-loader",
     icon = "__LoaderRedux__/graphics/icon/green-loader.png",
+    icon_size = 32,
     flags = {"placeable-neutral", "player-creation", "fast-replaceable-no-build-while-moving"},
     minable = {hardness = 0.2, mining_time = 0.5, result = "green-loader"},
     max_health = 170,
@@ -85,6 +87,7 @@ data:extend({
     type = "loader",
     name = "purple-loader",
     icon = "__LoaderRedux__/graphics/icon/purple-loader.png",
+    icon_size = 32,
     flags = {"placeable-neutral", "player-creation", "fast-replaceable-no-build-while-moving"},
     minable = {hardness = 0.2, mining_time = 0.5, result = "purple-loader"},
     max_health = 170,

@@ -1,3 +1,6 @@
+1.2.0
+- updated to Factorio 0.16
+
 1.1.2
 - disabling belts in bobs disables respective loader #4
 

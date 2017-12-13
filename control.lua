@@ -273,7 +273,7 @@ end)
 
 --Remove loader/wagon connections when they die/get mined
 function OnEntityRemoved(event)
--- script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, function(event)
+-- script.on_event({defines.events.on_entity_died, defines.events.on_pre_player_mined_item, defines.events.on_robot_pre_mined}, function(event)
 	local entity = event.entity
 	if entity.type == "cargo-wagon" then
 		local wagon = global.wagons[entity.unit_number]
@@ -308,11 +308,11 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 		global.loader_wagon_map = {}
 		if use_train == "disabled" then
 			script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, nil)
-			script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, nil)
+			script.on_event({defines.events.on_entity_died, defines.events.on_pre_player_mined_item, defines.events.on_robot_pre_mined}, nil)
 			script.on_event(defines.events.on_tick, nil)
 		else
 			script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, OnTrainUpdate)
-			script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
+			script.on_event({defines.events.on_entity_died, defines.events.on_pre_player_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
 			for _, surface in pairs(game.surfaces) do
 				for _, wagon in pairs(surface.find_entities_filtered{type = "cargo-wagon"}) do
 					find_loader(wagon)
@@ -333,11 +333,11 @@ do
 function init_events()
 	if use_train == "disabled" then
 		script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, nil)
-		script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, nil)
+		script.on_event({defines.events.on_entity_died, defines.events.on_pre_player_mined_item, defines.events.on_robot_pre_mined}, nil)
 		script.on_event(defines.events.on_tick, nil)
 	else
 		script.on_event({defines.events.on_train_changed_state, defines.events.on_train_created}, OnTrainUpdate)
-		script.on_event({defines.events.on_entity_died, defines.events.on_preplayer_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
+		script.on_event({defines.events.on_entity_died, defines.events.on_pre_player_mined_item, defines.events.on_robot_pre_mined}, OnEntityRemoved)
 		if global.wagons and next(global.wagons) then
 			script.on_event(defines.events.on_tick, OnTick)
 		else
