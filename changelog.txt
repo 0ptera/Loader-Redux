@@ -1,62 +1,108 @@
-1.2.0
-- updated to Factorio 0.16
-
-1.1.2
-- disabling belts in bobs disables respective loader #4
-
-1.1.1
-- deconstruction events trigger only when train usage is auto or all trains
-- fixed: on_tick runs only if there are wagons to load/unload (was broken in 1.1.0)
-
-1.1.0
-- Rewritten Train loading/unloading by ReverseStateMonad Pull #3
-
-1.0.1
-- loaders snap to bot built belts
-- changed setting Snap Loaders from player to map setting so bots can use it
-- fixed typo in setting tooltip
-
-1.0.0
-- rebalanced recipes to match progression of belts and inserters
-
-0.2.8
-- fixed loaders snapping to belts 2 tiles away
-
-0.2.7
-- fixed update to 0.2.6 didn't correctly write wagon inventories to storage
-
-0.2.6
-- reduced ups when un-/loading wagons by Nexela
-- changed Loader Snapping warning Text include both mod name and mod display name
-
-0.2.5
-- fixed entity.neighbours changed in 0.15.13
-
-0.2.4
-- snapping turns loaders away from non-belt entities
-
-0.2.3
-- fixed MP desync on starting new maps
-
-0.2.2
-- snapping enabled by default
-- replaced automatic only toggle with dropdown disabled, automatic-only, all trains
-- train events are only active when trains are enabled
-
-0.2.1
-- workaround of replacing loaders in script to rotate them is no longer necessary
-
-0.2.0
-- Rewritten Train loading/unloading by Nexela
-- On_Tick only runs if there are wagons to load/unload
-- Rewritten Loader snapping. Defaults to off
-- added toggle settings for loader snapping and Automatic mode trains
-
-0.1.2
-- switch to built in copy-paste functions
-
-0.1.1
-- fixed some errors with boblogistics
-
-0.1.0
-- initial release
+---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 4.1.2018
+  Features:
+    - color update by Incvisitor #8
+    - in game changelog
+---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 13.12.2017
+  Features:
+    - updated to Factorio 0.16
+---------------------------------------------------------------------------------------------------
+Version: 1.1.2
+Date: 17.10.2017
+  Bugfixes:
+    - disabling belts in bobs disables respective loader #4
+---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: ???
+  Features:
+    - deconstruction events trigger only when train usage is auto or all trains
+  Bugfixes:
+    - on_tick runs only if there are wagons to load/unload (was broken in 1.1.0)
+---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: ???
+  Features:
+    - Rewritten Train loading/unloading by ReverseStateMonad Pull #3
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: ???
+  Features:
+    - loaders snap to bot built belts
+    - changed setting Snap Loaders from player to map setting so bots can use it
+  Bugfixes:
+    - fixed typo in setting tooltip
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: ???
+  Features:
+    - rebalanced recipes to match progression of belts and inserters
+---------------------------------------------------------------------------------------------------
+Version: 0.2.8
+Date: ???
+  Bugfixes:
+    - fixed loaders snapping to belts 2 tiles away
+---------------------------------------------------------------------------------------------------
+Version: 0.2.7
+Date: ???
+  Bugfixes:
+    - fixed update to 0.2.6 didn't correctly write wagon inventories to storage
+---------------------------------------------------------------------------------------------------
+Version: 0.2.6
+Date: ???
+  Features:
+    - reduced ups when un-/loading wagons by Nexela
+    - Loader Snapping warning Text include both mod name and mod display name
+---------------------------------------------------------------------------------------------------
+Version: 0.2.5
+Date: ???
+  Bugfixes:
+    - fixed entity.neighbours changed in 0.15.13
+---------------------------------------------------------------------------------------------------
+Version: 0.2.4
+Date: ???
+  Features:
+    - snapping turns loaders away from non-belt entities
+---------------------------------------------------------------------------------------------------
+Version: 0.2.3
+Date: ???
+  Bugfixes:
+    - fixed MP desync on starting new maps
+---------------------------------------------------------------------------------------------------
+Version: 0.2.2
+Date: ???
+  changes:
+    - snapping enabled by default
+    - replaced automatic only toggle with dropdown disabled, automatic-only, all trains
+    - train events are only active when trains are enabled
+---------------------------------------------------------------------------------------------------
+Version: 0.2.1
+Date: ???
+  Removed:
+    - workaround of replacing loaders in script to rotate them, no longer necessary
+---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: ???
+  Features:
+    - Rewritten Train loading/unloading by Nexela
+    - On_Tick only runs if there are wagons to load/unload
+    - Rewritten Loader snapping. Defaults to off
+    - added toggle settings for loader snapping and Automatic mode trains
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: ???
+  Changes:
+    - switch to built in copy-paste functions
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: ???
+  Bugfixes:
+    - fixed some errors with boblogistics
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: ???
+  Features:
+    - made loaders available
+    - graphics from Archangel666
