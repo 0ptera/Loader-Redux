@@ -92,29 +92,64 @@ local function wagon_transfer(wagon_data)
 	end
 end
 
+local function isTechnicalWagon(wagon)
+	return game.entity_prototypes[wagon.name].friction_force == 999999
+end
+
+local function visualizeArea(surface, area)
+	for x = area[1][1],area[2][1],0.1 do
+		for y = area[1][2],area[2][2],0.1 do
+			surface.spill_item_stack({x, y}, {name="iron-plate"}, false)
+		end
+	end
+end
+
 local function getLoaderSearchData(wagon, direction)
 	local size = game.entity_prototypes[wagon.name].collision_box --vanilla is {{-0.6, -2.4}, {0.6, 2.4}}
 	local min_x = size.left_top.x
 	local min_y = size.left_top.y
 	local max_x = size.right_bottom.x
 	local max_y = size.right_bottom.y
-	--game.print("Checking " .. direction .. " with wagon bounds of {{" .. min_x .. " , " .. min_y .. "}, {" .. max_x .. " , " .. max_y .. "}}")
+	--game.print("Checking " .. direction .. " with wagon bounds of {{" .. min_x .. " , " .. min_y .. "}, {" .. max_x .. " , " .. max_y .. "}} and angle " .. wagon.orientation .. (isTechnicalWagon(wagon) and " (technical)" or ""))
+	local area = {}
 	if direction == "west" then
-		return {type = "loader", area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
+		area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}} --was -1.5, -2.2, +0.5, +2.2
 	elseif direction == "east" then
-		return {type = "loader",area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
+		area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}} --was +0.5, -2.2, +1.5, +2.2
 	elseif direction == "north" then
-		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
+		area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}} --was -2.2, -1.5, +2.2, -0.5
 	elseif direction == "south" then
-		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
+		area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}} --was -2.2, +0.5, +2.2, +1.5
+	else --general "search all around"
+		area = {{wagon.position.x+min_x-0.4, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.4, wagon.position.y+max_y-0.2}} --searches the entire perimeter of the wagon/chest/etc, since it is likely omnidirectional
 	end
+	--visualizeArea(wagon.surface, area)
+	return {type = "loader", area = area}
 end
 
 --Find loaders based on train orientation and state
 local function find_loader(wagon, ent)
 	if wagon_valid(wagon) then
 		w_num = wagon.unit_number
-		if wagon.orientation == 0 or wagon.orientation == 0.5 then
+		if isTechnicalWagon(wagon) then
+			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "*"))) do
+				if (ent and loader == ent) or not ent then
+				local l_num = loader.unit_number
+				global.loader_wagon_map[l_num] = w_num
+				global.wagons[w_num] = global.wagons[w_num] or {
+					wagon = wagon,
+					wagon_inv = wagon.get_inventory(defines.inventory.cargo_wagon),
+					loaders = {}
+				}
+				global.wagons[w_num].loaders[l_num] = {
+					loader = loader,
+					direction = loader.direction,
+					[1] = loader.get_transport_line(1),
+					[2] = loader.get_transport_line(2)
+				}
+				end
+			end
+		elseif wagon.orientation == 0 or wagon.orientation == 0.5 then
 			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "west"))) do
 				if (ent and loader == ent) or not ent then
 				local l_num = loader.unit_number
