@@ -92,13 +92,30 @@ local function wagon_transfer(wagon_data)
 	end
 end
 
+local function getLoaderSearchData(wagon, direction)
+	local size = game.entity_prototypes[wagon.name].collision_box --vanilla is {{-0.6, -2.4}, {0.6, 2.4}}
+	local min_x = size.left_top.x
+	local min_y = size.left_top.y
+	local max_x = size.right_bottom.x
+	local max_y = size.right_bottom.y
+	--game.print("Checking " .. direction .. " with wagon bounds of {{" .. min_x .. " , " .. min_y .. "}, {" .. max_x .. " , " .. max_y .. "}}")
+	if direction == "west" then
+		return {type = "loader", area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
+	elseif direction == "east" then
+		return {type = "loader",area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
+	elseif direction == "north" then
+		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
+	elseif direction == "south" then
+		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
+	end
+end
+
 --Find loaders based on train orientation and state
 local function find_loader(wagon, ent)
 	if wagon_valid(wagon) then
 		w_num = wagon.unit_number
 		if wagon.orientation == 0 or wagon.orientation == 0.5 then
-			local west = {type = "loader", area = {{wagon.position.x-1.5, wagon.position.y-2.2}, {wagon.position.x-0.5, wagon.position.y+2.2}}}
-			for _, loader in pairs(wagon.surface.find_entities_filtered(west)) do
+			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "west"))) do
 				if (ent and loader == ent) or not ent then
 				local l_num = loader.unit_number
 				global.loader_wagon_map[l_num] = w_num
@@ -115,8 +132,7 @@ local function find_loader(wagon, ent)
 				}
 				end
 			end
-			local east = {type = "loader",area = {{wagon.position.x+0.5, wagon.position.y-2.2}, {wagon.position.x+1.5, wagon.position.y+2.2}}}
-			for _, loader in pairs(wagon.surface.find_entities_filtered(east)) do
+			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "east"))) do
 				if (ent and loader == ent) or not ent then
 				local l_num = loader.unit_number
 				global.loader_wagon_map[l_num] = w_num
@@ -134,8 +150,7 @@ local function find_loader(wagon, ent)
 				end
 			end
 		elseif wagon.orientation==0.25 or wagon.orientation==0.75 then
-			local north = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y-1.5}, {wagon.position.x+2.2, wagon.position.y-0.5}}}
-			for _, loader in pairs(wagon.surface.find_entities_filtered(north)) do
+			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "north"))) do
 				if (ent and loader == ent) or not ent then
 				local l_num = loader.unit_number
 				global.loader_wagon_map[l_num] = w_num
@@ -152,8 +167,7 @@ local function find_loader(wagon, ent)
 				}
 				end
 			end
-			local south = {type = "loader", area = {{wagon.position.x-2.2, wagon.position.y+0.5}, {wagon.position.x+2.2, wagon.position.y+1.5}}}
-			for _, loader in pairs(wagon.surface.find_entities_filtered(south)) do
+			for _, loader in pairs(wagon.surface.find_entities_filtered(getLoaderSearchData(wagon, "south"))) do
 				if (ent and loader == ent) or not ent then
 				local l_num = loader.unit_number
 				global.loader_wagon_map[l_num] = w_num
