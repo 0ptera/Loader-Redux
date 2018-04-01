@@ -83,14 +83,14 @@ if bobLogistic4 then
 data:extend({
    {
     type = "technology",
-    name = "green-loader",
-    icon = "__LoaderRedux__/graphics/tech/green-loader-tech.png",
+    name = "purple-loader",
+    icon = "__LoaderRedux__/graphics/tech/purple-loader-tech.png",
     icon_size = 128,
     effects =
     {
       {
         type = "unlock-recipe",
-        recipe = "green-loader"
+        recipe = "purple-loader"
       }
     },
     prerequisites = {"bob-logistics-4"},
@@ -105,14 +105,14 @@ if bobLogistic5 then
 data:extend({
   {
     type = "technology",
-    name = "purple-loader",
-    icon = "__LoaderRedux__/graphics/tech/purple-loader-tech.png",
+    name = "green-loader",
+    icon = "__LoaderRedux__/graphics/tech/green-loader-tech.png",
     icon_size = 128,
     effects =
     {
       {
         type = "unlock-recipe",
-        recipe = "purple-loader"
+        recipe = "green-loader"
       }
     },
     prerequisites = {"bob-logistics-5"},
