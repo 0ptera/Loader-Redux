@@ -10,20 +10,20 @@ function make_loader_entity(name,speed)
   loader.icon = "__LoaderRedux__/graphics/icon/"..name..".png"
   loader.icon_size = 32
   loader.speed = speed
-  loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}  
-  return loader  
+  loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
+  return loader
 end
 
 
 data:extend({
-  make_loader_entity("loader",0.038),
-  make_loader_entity("fast-loader",0.0704),
-  make_loader_entity("express-loader",0.106),
+  make_loader_entity("loader", data.raw["transport-belt"]["transport-belt"].speed),
+  make_loader_entity("fast-loader", data.raw["transport-belt"]["fast-transport-belt"].speed),
+  make_loader_entity("express-loader", data.raw["transport-belt"]["express-transport-belt"].speed),
 })
 
 if data.raw.technology["bob-logistics-4"] then
-  data:extend({  
-    make_loader_entity("purple-loader",0.125),
-    make_loader_entity("green-loader",0.17),
+  data:extend({
+    make_loader_entity("purple-loader", data.raw["transport-belt"]["turbo-transport-belt"].speed),
+    make_loader_entity("green-loader", data.raw["transport-belt"]["ultimate-transport-belt"].speed),
   })
 end
