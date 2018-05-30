@@ -35,7 +35,6 @@ end
 
 
 local blueLoader = data.raw.recipe["express-loader"]
-blueLoader.category = "crafting-with-fluid"
 blueLoader.energy_required = 5
 blueLoader.ingredients =
 {
@@ -46,6 +45,7 @@ blueLoader.ingredients =
 if data.raw.item["aluminium-plate"] then
   table.insert(blueLoader.ingredients, {"aluminium-plate", 10})
 else
+  blueLoader.category = "crafting-with-fluid"
   table.insert(blueLoader.ingredients, {type="fluid", name="lubricant", amount=40})
 end
 if data.raw.item["cobalt-steel-bearing"] then
