@@ -4,7 +4,7 @@ yellowLoader.ingredients =
 {
   {"inserter", 5},
   {"transport-belt", 5},
-  {"electronic-circuit", 10},  
+  {"electronic-circuit", 10},
 }
 -- change recipe for bobplates
 if data.raw.item["tin-plate"] then
@@ -18,7 +18,7 @@ local redLoader = data.raw.recipe["fast-loader"]
 redLoader.energy_required = 5
 redLoader.ingredients =
 {
-  {"loader", 1},  
+  {"loader", 1},
   {"electronic-circuit", 20},
 }
 -- change recipe for bobplates
@@ -39,7 +39,7 @@ blueLoader.energy_required = 5
 blueLoader.ingredients =
 {
   {"fast-loader", 1},
-  {"advanced-circuit", 20},  
+  {"advanced-circuit", 20},
 }
 -- change recipe for bobplates
 if data.raw.item["aluminium-plate"] then
