@@ -7,6 +7,35 @@ local snapping = require("snapping")
 local use_train = settings.global["loader-use-trains"].value
 local use_snapping = settings.global["loader-snapping"].value
 
+local supported_loader_names = {}  -- list of loader names for find_entities_filtered
+
+-- remote interface to add and remove loaders from whitelist
+remote.add_interface("loader-redux",	{
+  -- add loader name if it doesn't already exist
+  add_loader = function(name)
+    if name then
+      global.supported_loaders[name] = true
+      supported_loader_names = {}
+      for k, v in pairs(global.supported_loaders) do
+        table.insert(supported_loader_names, k)
+      end
+      log("supported_loaders: "..serpent.block(global.supported_loaders) )
+    end
+  end,
+
+  -- remove loader name
+  remove_loader = function(name)
+    if name then
+      global.supported_loaders[name] = nil
+      supported_loader_names = {}
+      for k, v in pairs(global.supported_loaders) do
+        table.insert(supported_loader_names, k)
+      end
+      log("supported_loaders: "..serpent.block(global.supported_loaders) )
+    end
+  end
+})
+
 local wagon_valid
 local wagon_validators = {
 	["disabled"] = function (wagon)
@@ -98,15 +127,16 @@ local function getLoaderSearchData(wagon, direction)
 	local min_y = size.left_top.y
 	local max_x = size.right_bottom.x
 	local max_y = size.right_bottom.y
+
 	--game.print("Checking " .. direction .. " with wagon bounds of {{" .. min_x .. " , " .. min_y .. "}, {" .. max_x .. " , " .. max_y .. "}}")
 	if direction == "west" then
-		return {type = "loader", area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
+		return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
 	elseif direction == "east" then
-		return {type = "loader",area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
+		return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
 	elseif direction == "north" then
-		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
+		return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
 	elseif direction == "south" then
-		return {type = "loader", area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
+		return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
 	end
 end
 
@@ -253,7 +283,7 @@ end
 --Check for loaders around rotated entities that may need snapping
 script.on_event(defines.events.on_player_rotated_entity, function(event)
 	if use_snapping then
-		snapping.check_for_loaders(event)
+		snapping.check_for_loaders(event, supported_loader_names)
 	end
 end)
 
@@ -261,7 +291,7 @@ end)
 --Check anything else built and check for loaders around it they may need correcting.
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
 	local entity = event.created_entity
-	if entity.type == "loader" then
+	if entity.type == "loader" and global.supported_loaders[entity.name] then
 		if use_snapping then
 			snapping.snap_loader(entity, event)
 		end
@@ -281,7 +311,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 			script.on_event(defines.events.on_tick, nil)
 		end
 	elseif use_snapping then
-		snapping.check_for_loaders(event)
+		snapping.check_for_loaders(event, supported_loader_names)
 	end
 end)
 
@@ -336,7 +366,7 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 				script.on_event(defines.events.on_tick, OnTick)
 			else
 				script.on_event(defines.events.on_tick, nil)
-			end 
+			end
 		end
 	end
 end)
@@ -360,6 +390,17 @@ function init_events()
 	end
 end
 
+function init_supported_loaders()
+  global.supported_loaders = {} -- loader name dictionary for fast access on name base
+
+  -- use interface to fill whitelist as test
+  remote.call("loader-redux", "add_loader",   "loader")
+  remote.call("loader-redux", "add_loader",   "fast-loader")
+  remote.call("loader-redux", "add_loader",   "express-loader")
+  remote.call("loader-redux", "add_loader",   "purple-loader")
+  remote.call("loader-redux", "add_loader",   "green-loader")
+end
+
 script.on_load(function()
 	select_validator()
 	init_events()
@@ -367,6 +408,7 @@ end)
 
 -- On first install scan the map and find any loaders that might need work!
 script.on_init(function()
+  init_supported_loaders()
 	select_validator()
 	global.wagons = {}
 	global.loader_wagon_map = {}
@@ -382,6 +424,7 @@ end)
 
 -- rescan all loader-wagon connections in case changing mods removed some wagons
 script.on_configuration_changed(function(data)
+  init_supported_loaders()
 	select_validator()
 	global.wagons = {}
 	global.loader_wagon_map = {}

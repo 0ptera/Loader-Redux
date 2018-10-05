@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.0
+Date: 5.10.2018
+  Features:
+    - added remote interface to register and unregister supported loaders by entity name
+  Changes:
+    - push to 0.16.51 stable
+    - mods using snapping functionality have to register their loaders through remote interface
+---------------------------------------------------------------------------------------------------
 Version: 1.2.6
 Date: 30.5.2018
   Changes:
@@ -7,7 +15,7 @@ Date: 30.5.2018
 Version: 1.2.6
 Date: 17.5.2018
   Changes:
-    - push to 0.16.36 stable 
+    - push to 0.16.36 stable
   Bugfixes:
     - Bob loaders use respective belt colors by magu5026
 ---------------------------------------------------------------------------------------------------
