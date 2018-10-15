@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.1
+Date: 15.10.2018
+  Changes:
+    - moved remote interface from on_configuration_changed to on_load to be more in line with other mods
+    - use cargo wagons defaults to disabled, players have to implicitly accept performance drop of this feature
+---------------------------------------------------------------------------------------------------
 Version: 1.3.0
 Date: 5.10.2018
   Features:
