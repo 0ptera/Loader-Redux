@@ -10,7 +10,7 @@ data:extend{
 		type = "string-setting",
 		name = "loader-use-trains",
 		setting_type = "runtime-global",
-		default_value = "all trains",
+		default_value = "disabled",
 		allowed_values = {"disabled", "auto-only", "all trains"},
 		order = "loader-automatic",
 	}
