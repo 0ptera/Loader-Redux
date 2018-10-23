@@ -20,7 +20,7 @@ remote.add_interface("loader-redux",	{
       for k, v in pairs(supported_loaders) do
         table.insert(supported_loader_names, k)
       end
-      log("supported_loaders: "..serpent.block(supported_loaders) )
+      -- log("supported_loaders: "..serpent.block(supported_loaders) )
     end
   end,
 
@@ -32,7 +32,7 @@ remote.add_interface("loader-redux",	{
       for k, v in pairs(supported_loaders) do
         table.insert(supported_loader_names, k)
       end
-      log("supported_loaders: "..serpent.block(supported_loaders) )
+      -- log("supported_loaders: "..serpent.block(supported_loaders) )
     end
   end
 })
