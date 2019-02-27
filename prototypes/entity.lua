@@ -32,7 +32,7 @@ data:extend({
   make_loader_entity("express-loader", data.raw["transport-belt"]["express-transport-belt"]),
 })
 
-if data.raw.technology["bob-logistics-4"] then
+if mods["boblogistics"] then
   data:extend({
     make_loader_entity("purple-loader", data.raw["transport-belt"]["turbo-transport-belt"]),
     make_loader_entity("green-loader", data.raw["transport-belt"]["ultimate-transport-belt"]),

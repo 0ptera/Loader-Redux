@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.1
+Date: 27.2.2019
+  Changes:
+    - loaders no longer face away from non belt entities, fixes a bug with blueprinting chest-loader-loader-chest connections
+    - updated recipes matching base and boblogistics
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
 Date: 26.2.2019
   Features:

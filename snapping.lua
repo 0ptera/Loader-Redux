@@ -143,38 +143,10 @@ function snapping.snap_loader(loader, event)
   local entities = find_entity_by_loader(loader)
   local snapped = false
   for _, ent in pairs(entities) do
-    -- log("target: "..ent.name.." position: "..ent.position.x..","..ent.position.y.."	direction: "..ent.direction)
+    -- log("(snap_loader) target: "..ent.name.." position: "..ent.position.x..","..ent.position.y.."	direction: "..ent.direction)
     if ent.valid and ent ~= loader and snapTypes[ent.type] then
       snap_loader_to_target(loader, ent, event)
       snapped = true
-    end
-  end
-
-  -- Idiot snapping, face away from non belt entities
-  if not snapped then
-    for _, ent in pairs(entities) do
-      if ent.valid and ent ~= loader then
-        local loader_type = loader.loader_type
-        local direction = loader.direction
-        if loader.position.y > ent.position.y and ((loader.direction == 0 and loader.loader_type == "output") or (loader.direction == 4 and loader.loader_type == "input")) then
-          direction = 4
-          loader_type = "output"
-        elseif loader.position.y < ent.position.y and ((loader.direction == 4 and loader.loader_type == "output") or (loader.direction == 0 and loader.loader_type == "input")) then
-          direction = 0
-          loader_type = "output"
-        elseif loader.position.x > ent.position.x and ((loader.direction == 6 and loader.loader_type == "output") or (loader.direction == 2 and loader.loader_type == "input")) then
-          direction = 2
-          loader_type = "output"
-        elseif loader.position.x < ent.position.x and ((loader.direction == 2 and loader.loader_type == "output") or (loader.direction == 6 and loader.loader_type == "input")) then
-          direction = 6
-          loader_type = "output"
-        end
-        if loader.direction ~= direction or loader.loader_type ~= loader_type then
-          --loader.surface.create_entity{name="flying-text", position={loader.position.x-.25, loader.position.y-.5}, text = "^", color = {r=1}}
-          loader.loader_type = loader_type
-          loader.direction = direction
-        end
-      end
     end
   end
 
