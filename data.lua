@@ -2,7 +2,6 @@ require("util.copyPrototype")
 require("prototypes.item")
 require("prototypes.recipe")
 require("prototypes.entity")
--- require("prototypes.technology")
 
 -- add loader to existing techs
 local loader_techs = {

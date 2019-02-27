@@ -11,7 +11,7 @@ function make_loader_item(name, subgroup, order)
 	}
 end
 
-if data.raw.technology["bob-logistics-4"] then
+if mods["boblogistics"] then
   data:extend({
     make_loader_item("loader","bob-logistic-tier-1","d-a"),
     make_loader_item("fast-loader","bob-logistic-tier-2","d-b"),
@@ -25,4 +25,4 @@ else
     make_loader_item("fast-loader","belt","d-b"),
     make_loader_item("express-loader","belt","d-c"),
   })
-end
+end  

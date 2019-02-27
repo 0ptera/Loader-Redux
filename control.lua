@@ -290,6 +290,7 @@ end)
 
 --When bulding, if its a loader check for snapping and snap, if snapped or not snapping then add to list
 --Check anything else built and check for loaders around it they may need correcting.
+-- script.on_event({defines.events.on_built_entity}, function(event)
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
   local entity = event.created_entity
   if entity.type == "loader" and supported_loaders[entity.name] then
