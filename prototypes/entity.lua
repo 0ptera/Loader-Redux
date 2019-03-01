@@ -12,15 +12,20 @@ function make_loader_entity(name, belt)
   loader.structure.direction_out.sheet.height = 128
   loader.structure.direction_out.sheet.y = 128
 
-  loader.speed           = belt.speed
-  loader.belt_horizontal = belt.belt_horizontal
-  loader.belt_vertical   = belt.belt_vertical
-  loader.ending_top      = belt.ending_top
-  loader.ending_bottom   = belt.ending_bottom
-  loader.ending_side     = belt.ending_side
-  loader.starting_top    = belt.starting_top
-  loader.starting_bottom = belt.starting_bottom
-  loader.starting_side   = belt.starting_side
+  loader.speed = belt.speed
+
+  -- 0.17 animations
+  loader.belt_animation_set = belt.belt_animation_set
+
+  -- 0.16 legacy
+  -- loader.belt_horizontal = belt.belt_horizontal or basic_belt_horizontal
+  -- loader.belt_vertical   = belt.belt_vertical or basic_belt_vertical
+  -- loader.ending_top      = belt.ending_top or basic_belt_ending_top
+  -- loader.ending_bottom   = belt.ending_bottom or basic_belt_ending_bottom
+  -- loader.ending_side     = belt.ending_side or basic_belt_ending_side
+  -- loader.starting_top    = belt.starting_top or basic_belt_starting_top
+  -- loader.starting_bottom = belt.starting_bottom or basic_belt_starting_bottom
+  -- loader.starting_side   = belt.starting_side or basic_belt_starting_side  
 
   return loader
 end
