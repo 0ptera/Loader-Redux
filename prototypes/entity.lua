@@ -16,6 +16,7 @@ function make_loader_entity(name, belt)
 
   -- 0.17 animations
   loader.belt_animation_set = belt.belt_animation_set
+  loader.structure_render_layer = "transport-belt-circuit-connector"  
 
   -- 0.16 legacy
   -- loader.belt_horizontal = belt.belt_horizontal or basic_belt_horizontal
