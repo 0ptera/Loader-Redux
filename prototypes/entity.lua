@@ -37,10 +37,17 @@ data:extend({
   make_loader_entity("fast-loader", data.raw["transport-belt"]["fast-transport-belt"]),
   make_loader_entity("express-loader", data.raw["transport-belt"]["express-transport-belt"]),
 })
+data.raw["loader"]["loader"].next_upgrade = "fast-loader"
+data.raw["loader"]["fast-loader"].next_upgrade = "express-loader"
+data.raw["loader"]["express-loader"].next_upgrade = nil
+
 
 if mods["boblogistics"] then
   data:extend({
     make_loader_entity("purple-loader", data.raw["transport-belt"]["turbo-transport-belt"]),
     make_loader_entity("green-loader", data.raw["transport-belt"]["ultimate-transport-belt"]),
   })
+  data.raw["loader"]["express-loader"].next_upgrade = "purple-loader"
+  data.raw["loader"]["purple-loader"].next_upgrade = "green-loader"
+  data.raw["loader"]["green-loader"].next_upgrade = nil
 end
