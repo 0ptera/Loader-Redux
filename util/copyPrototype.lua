@@ -1,3 +1,9 @@
+--[[ Copyright (c) 2017 Optera
+ * Data phase helper functions
+ *
+ * This is free and unencumbered software released into the public domain.
+--]]
+
 function copyPrototype(type, name, newName)
   if not data.raw[type][name] then error("type "..type.." "..name.." doesn't exist") end
   local p = table.deepcopy(data.raw[type][name])
