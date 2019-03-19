@@ -1,3 +1,9 @@
+--[[ Copyright (c) 2017 Optera
+ * Part of Loader Redux
+ *
+ * See LICENSE.md in the project directory for license information.
+--]]
+
 -- http://lua-api.factorio.com/latest/events.html#on_entity_settings_pasted
 -- http://lua-api.factorio.com/0.15.2/LuaEntity.html#LuaEntity.filter_slot_count
 -- http://lua-api.factorio.com/0.15.2/LuaEntity.html#LuaEntity.get_filter
@@ -7,7 +13,7 @@ local snapping = require("snapping")
 local use_train = settings.global["loader-use-trains"].value
 local use_snapping = settings.global["loader-snapping"].value
 
-local supported_loaders = {} -- dictionary indexed by supported entity name 
+local supported_loaders = {} -- dictionary indexed by supported entity name
 local supported_loader_names = {}  -- list of loader names for find_entities_filtered
 
 -- remote interface to add and remove loaders from whitelist

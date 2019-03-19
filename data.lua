@@ -1,4 +1,11 @@
-require("util.copyPrototype")
+--[[ Copyright (c) 2017 Optera
+ * Part of Loader Redux
+ *
+ * See LICENSE.md in the project directory for license information.
+--]]
+
+optera_lib = optera_lib or {}
+
 require("prototypes.item")
 require("prototypes.recipe")
 require("prototypes.entity")

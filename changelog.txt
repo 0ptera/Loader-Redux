@@ -1,40 +1,45 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.5
+Date: 2019-03-19
+  Changes:
+    - moved functionality to Opteras Library
+---------------------------------------------------------------------------------------------------
 Version: 1.4.4
-Date: 10.3.2019
+Date: 2019-03-10
   Features:
     - loader can be upgraded with empty upgrade planer
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.3
-Date: 1.3.2019
+Date: 2019-03-01
   Bugfixes:
     - loader graphics work nice alongside underground belts https://forums.factorio.com/viewtopic.php?f=11&t=65627
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.2
-Date: 1.3.2019
+Date: 2019-03-01
   Bugfixes:
     - updated loader belt animations to 0.17 standard #38
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.1
-Date: 27.2.2019
+Date: 2019-02-27
   Changes:
     - loaders no longer face away from non belt entities, fixes a bug with blueprinting chest-loader-loader-chest connections
     - updated recipes matching base and boblogistics
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.0
-Date: 26.2.2019
+Date: 2019-02-26
   Features:
     - updated to Factorio 0.17
     - added thumbnail
     - loader unlocks moved into corresponding logistics technologies
 ---------------------------------------------------------------------------------------------------
 Version: 1.3.1
-Date: 15.10.2018
+Date: 2018-10-15
   Changes:
     - moved remote interface from on_configuration_changed to on_load to be more in line with other mods
     - use cargo wagons defaults to disabled, players have to implicitly accept performance drop of this feature
 ---------------------------------------------------------------------------------------------------
 Version: 1.3.0
-Date: 5.10.2018
+Date: 2018-10-05
   Features:
     - added remote interface to register and unregister supported loaders by entity name
   Changes:
@@ -42,50 +47,50 @@ Date: 5.10.2018
     - mods using snapping functionality have to register their loaders through remote interface
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.7
-Date: 30.5.2018
+Date: 2018-05-30
   Changes:
     - allow handcrafting Express Loader for Bobs #27
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.6
-Date: 17.5.2018
+Date: 2018-05-17
   Changes:
     - push to 0.16.36 stable
   Bugfixes:
     - Bob loaders use respective belt colors by magu5026
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.5
-Date: 2.4.2018
+Date: 2018-04-02
   changes:
     - loaders use belt speeds
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.4
-Date: 1.4.2018
+Date: 2018-04-01
   Bugfixes:
     - green and purple loader tech unlocks where swapped #25
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.3
-Date: 30.3.2018
+Date: 2018-03-30
   Changes:
     - support for Bob v0.16.x #23
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.2
-Date: 12.1.2018
+Date: 2018-01-12
   Features:
     - support for any wagon width by ReikaKalseki #19
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1
-Date: 4.1.2018
+Date: 2018-01-04
   Features:
     - color update by Incvisitor #8
     - in game changelog
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0
-Date: 13.12.2017
+Date: 2017-12-13
   Features:
     - updated to Factorio 0.16
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.2
-Date: 17.10.2017
+Date: 2017-10-17
   Bugfixes:
     - disabling belts in bobs disables respective loader #4
 ---------------------------------------------------------------------------------------------------

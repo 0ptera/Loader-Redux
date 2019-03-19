@@ -1,5 +1,11 @@
+--[[ Copyright (c) 2017 Optera
+ * Part of Loader Redux
+ *
+ * See LICENSE.md in the project directory for license information.
+--]]
+
 function make_loader_entity(name, belt)
-  local loader = data.raw["loader"][name] or copyPrototype("loader", "loader", name)
+  local loader = data.raw["loader"][name] or optera_lib.copy_prototype(data.raw["loader"]["loader"], name)
   loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
   loader.icon = "__LoaderRedux__/graphics/icon/"..name..".png"
   loader.icon_size = 32
@@ -16,7 +22,7 @@ function make_loader_entity(name, belt)
 
   -- 0.17 animations
   loader.belt_animation_set = belt.belt_animation_set
-  loader.structure_render_layer = "transport-belt-circuit-connector"  
+  loader.structure_render_layer = "transport-belt-circuit-connector"
 
   -- 0.16 legacy
   -- loader.belt_horizontal = belt.belt_horizontal or basic_belt_horizontal
@@ -26,7 +32,7 @@ function make_loader_entity(name, belt)
   -- loader.ending_side     = belt.ending_side or basic_belt_ending_side
   -- loader.starting_top    = belt.starting_top or basic_belt_starting_top
   -- loader.starting_bottom = belt.starting_bottom or basic_belt_starting_bottom
-  -- loader.starting_side   = belt.starting_side or basic_belt_starting_side  
+  -- loader.starting_side   = belt.starting_side or basic_belt_starting_side
 
   return loader
 end

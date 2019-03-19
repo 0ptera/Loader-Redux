@@ -1,3 +1,9 @@
+--[[ Copyright (c) 2017 Optera
+ * Part of Loader Redux
+ *
+ * See LICENSE.md in the project directory for license information.
+--]]
+
 local yellowLoader = data.raw.recipe["loader"]
 yellowLoader.energy_required = 5
 yellowLoader.ingredients =
