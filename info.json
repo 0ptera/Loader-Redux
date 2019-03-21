@@ -7,5 +7,5 @@
   "homepage": "https://forums.factorio.com/viewtopic.php?f=97&t=48412",
   "description": "Adds Loaders. Rewritten add-loader with new loader snapping logic and graphics from Arch666Angel.",
 	"factorio_version": "0.17",
-	"dependencies": ["base >= 0.17.16", "OpteraLib >= 0.1.0", "?boblogistics >= 0.17.0", "?bobplates >= 0.17.0"]
+	"dependencies": ["base >= 0.17.16", "OpteraLib >= 0.1.1", "?boblogistics >= 0.17.0", "?bobplates >= 0.17.0"]
 }
