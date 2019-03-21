@@ -10,14 +10,30 @@ function make_loader_entity(name, belt)
   loader.icon = "__LoaderRedux__/graphics/icon/"..name..".png"
   loader.icon_size = 32
 
-  loader.structure.direction_in.sheet.filename="__LoaderRedux__/graphics/entity/"..name..".png"
-  loader.structure.direction_in.sheet.width = 128
-  loader.structure.direction_in.sheet.height = 128
-  loader.structure.direction_out.sheet.filename="__LoaderRedux__/graphics/entity/"..name..".png"
-  loader.structure.direction_out.sheet.width = 128
-  loader.structure.direction_out.sheet.height = 128
-  loader.structure.direction_out.sheet.y = 128
-
+  loader.structure.direction_in.sheet = {
+    filename="__LoaderRedux__/graphics/entity/"..name..".png",
+    width = 128,
+    height = 128,
+    hr_version = {
+      filename="__LoaderRedux__/graphics/entity/hr-"..name..".png",
+      width = 256,
+      height = 256,
+      scale = 0.5,
+    }
+  }
+  loader.structure.direction_out.sheet ={
+    filename="__LoaderRedux__/graphics/entity/"..name..".png",
+    width = 128,
+    height = 128,
+    y = 128,
+    hr_version = {
+      filename="__LoaderRedux__/graphics/entity/hr-"..name..".png",
+      width = 256,
+      height = 256,
+      y = 256,
+      scale = 0.5,
+    }
+  }
   loader.speed = belt.speed
 
   -- 0.17 animations
