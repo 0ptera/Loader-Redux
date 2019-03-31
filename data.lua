@@ -14,9 +14,12 @@ local loader_techs = {
   ["logistics"] = "loader",
   ["logistics-2"] = "fast-loader",
   ["logistics-3"] = "express-loader",
-  ["logistics-4"] = "purple-loader",
-  ["logistics-5"] = "green-loader",
 }
+
+if mods["boblogistics"] then
+  loader_techs["logistics-4"] = "purple-loader"
+  loader_techs["logistics-5"] = "green-loader"
+end
 
 for tech, recipe in pairs(loader_techs) do
   if data.raw.technology[tech] then
