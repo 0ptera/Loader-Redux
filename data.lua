@@ -14,8 +14,8 @@ local loader_techs = {
   ["logistics"] = "loader",
   ["logistics-2"] = "fast-loader",
   ["logistics-3"] = "express-loader",
-  ["bob-logistics-4"] = "purple-loader",
-  ["bob-logistics-5"] = "green-loader",
+  ["logistics-4"] = "purple-loader",
+  ["logistics-5"] = "green-loader",
 }
 
 for tech, recipe in pairs(loader_techs) do
