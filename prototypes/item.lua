@@ -1,20 +1,21 @@
 --[[ Copyright (c) 2017 Optera
- * Part of Loader Redux
- *
- * See LICENSE.md in the project directory for license information.
+* Part of Loader Redux
+*
+* See LICENSE.md in the project directory for license information.
 --]]
 
 function make_loader_item(name, subgroup, order)
-	return{
-		type="item",
-		name=name,
-		icon="__LoaderRedux__/graphics/icon/"..name..".png",
+  return{
+    type="item",
+    name=name,
+    icon="__LoaderRedux__/graphics/icon/"..name..".png",
     icon_size = 32,
-		subgroup=subgroup,
-		order=order,
-		place_result=name,
-		stack_size=50
-	}
+    icon_mipmaps = nil,
+    subgroup=subgroup,
+    order=order,
+    place_result=name,
+    stack_size=50
+  }
 end
 
 if mods["boblogistics"] then
