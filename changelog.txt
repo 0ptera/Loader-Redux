@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.1
+Date: 2020-04-04
+  Features:
+    - snap to loader 1x1
+  Changes:
+    - moved snapping to script/snapping
+    - moved wagon functions to script/wagon_handler.lua
+---------------------------------------------------------------------------------------------------
 Version: 1.5.0
 Date: 2020-01-21
   Features:

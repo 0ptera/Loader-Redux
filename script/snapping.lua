@@ -8,9 +8,10 @@ local snapping = {}
 
 local snapTypes = {
   ["loader"] = true,
+  ["loader-1x1"] = true,
   ["splitter"] = true,
   ["underground-belt"] = true,
-  ["transport-belt"] = true
+  ["transport-belt"] = true,
 }
 
 -- set loader direction according to adjacent belts
@@ -24,11 +25,6 @@ local function snap_loader_to_target(loader, entity, event)
     log(entity.type.." not a valid entity for loader connection")
     return
   end
-  -- local targetio = nil
-  -- if entity.type == "loader" then targetio = entity.loader_type end
-  -- if entity.type == "underground-belt" then targetio = entity.belt_to_ground_type end
-  -- log("target: "..entity.name.." position: "..entity.position.x..","..entity.position.y.."	direction: "..entity.direction.." "..tostring(targetio))
-  -- log("loader: "..loader.name.." position: "..loader.position.x..","..loader.position.y.."	direction: "..loader.direction.." "..loader.loader_type)
 
   -- loader facing
   -- north 0: Loader 0 output or 4 input
