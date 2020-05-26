@@ -1,18 +1,32 @@
 {
-  "spellright.language": [
-    "de",
-    "en"
-  ],
-  "spellright.documentTypes": [
-    "markdown",
-    "latex",
-    "plaintext",
-    "properties",
-    "lua"
-  ],
-  "spellright.parserByClass": {
-    "properties": {
-      "parser": "plain"
-    }
-  }
+    "spellright.language": [
+        "de",
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "properties",
+        "lua"
+    ],
+    "spellright.parserByClass": {
+        "properties": {
+            "parser": "plain"
+        }
+    },
+    "Lua.diagnostics.globals": [
+        "global",
+        "log",
+        "script",
+        "defines",
+        "remote",
+        "game",
+        "data",
+        "serpent",
+        "settings"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global"
+    ]
 }

@@ -4,8 +4,10 @@
  * See LICENSE.md in the project directory for license information.
 --]]
 
+local flib = require('__flib__.data_util')
+
 function make_loader_entity(name, belt)
-  local loader = data.raw["loader"][name] or optera_lib.copy_prototype(data.raw["loader"]["loader"], name)
+  local loader = data.raw["loader"][name] or flib.copy_prototype(data.raw["loader"]["loader"], name)
   loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
   loader.icon = "__LoaderRedux__/graphics/icon/"..name..".png"
   loader.icon_size = 32
