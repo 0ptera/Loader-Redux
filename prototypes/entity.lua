@@ -4,7 +4,7 @@
  * See LICENSE.md in the project directory for license information.
 --]]
 
-local flib = require('__flib__.data_util')
+local flib = require('__flib__.data-util')
 
 function make_loader_entity(name, belt)
   local loader = data.raw["loader"][name] or flib.copy_prototype(data.raw["loader"]["loader"], name)

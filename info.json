@@ -1,11 +1,11 @@
 {
   "name": "LoaderRedux",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "title": "Loader Redux",
   "author": "Optera",
   "contact": "https://forums.factorio.com/memberlist.php?mode=viewprofile&u=21729",
   "homepage": "https://forums.factorio.com/viewtopic.php?f=97&t=48412",
   "description": "Adds Loaders. Rewritten add-loader with new loader snapping logic and graphics from Arch666Angel.",
-  "factorio_version": "0.18",
-  "dependencies": ["base >= 0.18.0", "flib >= 0.1.0", "?boblogistics >= 0.17.6", "?bobplates >= 0.17.2"]
+  "factorio_version": "1.0",
+  "dependencies": ["base >= 0.18.0", "flib >= 0.3.3", "?boblogistics >= 0.17.6", "?bobplates >= 0.17.2"]
 }
