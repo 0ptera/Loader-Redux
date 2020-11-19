@@ -6,8 +6,7 @@
 
 local yellowLoader = data.raw.recipe["loader"]
 yellowLoader.energy_required = 5
-yellowLoader.ingredients =
-{
+yellowLoader.ingredients = {
   {"iron-plate", 10},
   {"electronic-circuit", 10},
   {"inserter", 5},
@@ -16,8 +15,7 @@ yellowLoader.ingredients =
 
 local redLoader = data.raw.recipe["fast-loader"]
 redLoader.energy_required = 5
-redLoader.ingredients =
-{
+redLoader.ingredients = {
   {"iron-gear-wheel", 20},
   {"electronic-circuit", 20},
   {"advanced-circuit", 1},
@@ -27,8 +25,7 @@ redLoader.ingredients =
 local blueLoader = data.raw.recipe["express-loader"]
 blueLoader.energy_required = 5
 blueLoader.category = "crafting-with-fluid"
-blueLoader.ingredients =
-{
+blueLoader.ingredients = {
   {"iron-gear-wheel", 20},
   {"advanced-circuit", 20},
   {"fast-loader", 1},
@@ -44,8 +41,7 @@ if mods["boblogistics"] then
       name = "purple-loader",
       enabled = "false",
       energy_required = 5,
-      ingredients =
-      {
+      ingredients = {
         {"iron-gear-wheel", 20},
         {"advanced-circuit", 20},
         {"processing-unit", 1},
@@ -58,14 +54,13 @@ if mods["boblogistics"] then
       name = "green-loader",
       enabled = "false",
       energy_required = 5,
-      ingredients =
-      {
+      ingredients = {
         {"iron-gear-wheel", 20},
         {"processing-unit", 20},
         {"purple-loader", 1},
       },
       result = "green-loader"
-   },
+    },
   })
 
   -- change recipes when bobplates is also present
