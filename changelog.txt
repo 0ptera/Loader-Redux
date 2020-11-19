@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.4
+Date: 2020-XX-XX
+  Features:
+    - Updated graphics for normal and high resolutions
+  Changes:
+    - Made global make_loader_entity and make_loader_item functions locals
+---------------------------------------------------------------------------------------------------
 Version: 1.5.3
 Date: 2020-09-13
   Changes:
