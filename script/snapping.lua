@@ -28,9 +28,9 @@ local function snap_loader_to_target(loader, entity, event)
 
   -- loader facing
   -- north 0: Loader 0 output or 4 input
-  -- east	2: Loader 2 output or 6 input
+  -- east  2: Loader 2 output or 6 input
   -- south 4: Loader 4 output or 0 input
-  -- west	6: Loader 6 output or 2 input
+  -- west  6: Loader 6 output or 2 input
 
   local direction = loader.direction
   local loader_type = loader.loader_type
@@ -145,7 +145,7 @@ function snapping.snap_loader(loader, event)
   local entities = find_entity_by_loader(loader)
   local snapped = false
   for _, ent in pairs(entities) do
-    -- log("(snap_loader) target: "..ent.name.." position: "..ent.position.x..","..ent.position.y.."	direction: "..ent.direction)
+    -- log("(snap_loader) target: "..ent.name.." position: "..ent.position.x..","..ent.position.y.."  direction: "..ent.direction)
     if ent.valid and ent ~= loader and snapTypes[ent.type] then
       snap_loader_to_target(loader, ent, event)
       snapped = true

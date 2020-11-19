@@ -19,7 +19,7 @@ local supported_loaders = {} -- dictionary indexed by supported entity name
 local supported_loader_names = {}  -- list of loader names for find_entities_filtered
 
 -- remote interface to add and remove loaders from whitelist
-remote.add_interface("loader-redux",	{
+remote.add_interface("loader-redux",  {
   -- add loader name if it doesn't already exist
   add_loader = function(name)
     if name then
@@ -134,7 +134,7 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
   if event.setting == "loader-snapping" then
     use_snapping = settings.global["loader-snapping"].value
   end
-  if event.setting == "loader-use-trains" then	--Check to make sure our setting has changed
+  if event.setting == "loader-use-trains" then  --Check to make sure our setting has changed
     use_train = settings.global["loader-use-trains"].value
     wagon_handler.create_wagon_validators(use_train)
     global.wagons = {}

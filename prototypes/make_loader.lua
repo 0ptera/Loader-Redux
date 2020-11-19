@@ -6,20 +6,43 @@
 
 local flib = require('__flib__.data-util')
 
-local tints = {
-	["loader"] = util.color("ffc340d9"),
-	["fast-loader"] = util.color("e31717d9"),
-	["express-loader"] = util.color("43c0fad9"),
-	["purple-loader"] = util.color("a510e5d9"),
-	["green-loader"] = util.color("16f263d9"),
-}
-
--- Compatibility with Bob's Logistics Belt Reskin's color
-if mods["boblogistics-belt-reskin"] then
-	tints["purple-loader"] = util.color("df1ee5d9")
+--- create loader item
+-- @tparam String name
+-- @tparam String subgroup
+-- @tparam String order
+-- @tparam Types.Color[] tint
+function make_loader_item(name, subgroup, order, tint)
+  return{
+    type = "item",
+    name = name,
+    icons = {
+      -- Base
+      {
+        icon = "__LoaderRedux__/graphics/icon/icon-loader-base.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+      },
+      -- Mask
+      {
+        icon = "__LoaderRedux__/graphics/icon/icon-loader-mask.png",
+        icon_size = 64,
+        icon_mipmaps = 4,
+        tint = tint,
+      },
+    },
+    subgroup = subgroup,
+    order = order,
+    place_result = name,
+    stack_size = 50
+  }
 end
 
-local function make_loader_entity(name, belt, loader_tint)
+--- create loader entity
+-- @tparam String name
+-- @tparam Prototype.TransportBelt[] belt
+-- @tparam Types.Color[] tint
+-- @tparam String|nil next_upgrade
+function make_loader_entity(name, belt, tint, next_upgrade)
   local loader = data.raw["loader"][name] or flib.copy_prototype(data.raw["loader"]["loader"], name)
   loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
   loader.icons = {
@@ -34,7 +57,7 @@ local function make_loader_entity(name, belt, loader_tint)
       icon = "__LoaderRedux__/graphics/icon/icon-loader-mask.png",
       icon_size = 64,
       icon_mipmaps = 4,
-      tint = loader_tint,
+      tint = tint,
     },
   }
 
@@ -81,14 +104,14 @@ local function make_loader_entity(name, belt, loader_tint)
         width = 94,
         height = 79,
         shift = util.by_pixel(10, 2),
-        tint = loader_tint,
+        tint = tint,
         hr_version = {
           filename= "__LoaderRedux__/graphics/entity/hr-loader-mask.png",
           priority = "extra-high",
           width = 186,
           height = 155,
           shift = util.by_pixel(9.5, 1.5),
-          tint = loader_tint,
+          tint = tint,
           scale = 0.5,
         }
       },
@@ -157,14 +180,14 @@ local function make_loader_entity(name, belt, loader_tint)
         width = 94,
         height = 79,
         shift = util.by_pixel(10, 2),
-        tint = loader_tint,
+        tint = tint,
         hr_version = {
           filename= "__LoaderRedux__/graphics/entity/hr-loader-mask.png",
           priority = "extra-high",
           width = 186,
           height = 155,
           shift = util.by_pixel(9.5, 1.5),
-          tint = loader_tint,
+          tint = tint,
           scale = 0.5,
         }
       },
@@ -208,7 +231,9 @@ local function make_loader_entity(name, belt, loader_tint)
       -- },
     }
   }
+
   loader.speed = belt.speed
+  loader.next_upgrade = next_upgrade
 
   -- 0.17 animations
   loader.belt_animation_set = belt.belt_animation_set
@@ -217,23 +242,3 @@ local function make_loader_entity(name, belt, loader_tint)
   return loader
 end
 
-
-data:extend({
-  make_loader_entity("loader", data.raw["transport-belt"]["transport-belt"], tints["loader"]),
-  make_loader_entity("fast-loader", data.raw["transport-belt"]["fast-transport-belt"], tints["fast-loader"]),
-  make_loader_entity("express-loader", data.raw["transport-belt"]["express-transport-belt"], tints["express-loader"]),
-})
-data.raw["loader"]["loader"].next_upgrade = "fast-loader"
-data.raw["loader"]["fast-loader"].next_upgrade = "express-loader"
-data.raw["loader"]["express-loader"].next_upgrade = nil
-
-
-if mods["boblogistics"] then
-  data:extend({
-    make_loader_entity("purple-loader", data.raw["transport-belt"]["turbo-transport-belt"], tints["purple-loader"]),
-    make_loader_entity("green-loader", data.raw["transport-belt"]["ultimate-transport-belt"], tints["green-loader"]),
-  })
-  data.raw["loader"]["express-loader"].next_upgrade = "purple-loader"
-  data.raw["loader"]["purple-loader"].next_upgrade = "green-loader"
-  data.raw["loader"]["green-loader"].next_upgrade = nil
-end

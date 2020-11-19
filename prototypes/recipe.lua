@@ -33,49 +33,106 @@ blueLoader.ingredients = {
 }
 
 
--- add turbo and ultimate loader
+-- boblogistics and bobplates change all recipes
 if mods["boblogistics"] then
-  data:extend({
-    {
-      type = "recipe",
-      name = "purple-loader",
-      enabled = "false",
-      energy_required = 5,
-      ingredients = {
-        {"iron-gear-wheel", 20},
-        {"advanced-circuit", 20},
-        {"processing-unit", 1},
-        {"express-loader", 1},
-      },
-      result = "purple-loader"
-    },
-    {
-      type = "recipe",
-      name = "green-loader",
-      enabled = "false",
-      energy_required = 5,
-      ingredients = {
-        {"iron-gear-wheel", 20},
-        {"processing-unit", 20},
-        {"purple-loader", 1},
-      },
-      result = "green-loader"
-    },
-  })
-
-  -- change recipes when bobplates is also present
   if mods["bobplates"] then
-    data.raw.recipe["purple-loader"].ingredients = {
-      {"processing-unit", 10},
-      {"titanium-bearing", 14},
-      {"titanium-gear-wheel", 14},
-      {"express-loader", 1},
+    yellowLoader.ingredients = {
+      {"tin-plate", 10},
+      {"electronic-circuit", 5},
+      {"inserter", 5},
+      {"transport-belt", 2},
     }
-    data.raw.recipe["green-loader"].ingredients = {
-      {"advanced-processing-unit", 10},
-      {"nitinol-bearing", 14},
-      {"nitinol-gear-wheel", 14},
-      {"purple-loader", 1},
+    redLoader.ingredients = {
+      {"bronze-alloy", 10},
+      {"steel-gear-wheel", 14},
+      {"electronic-circuit", 5},
+      {"loader", 1},
     }
+    blueLoader.category = nil
+    blueLoader.ingredients = {
+      {"aluminium-plate", 10},
+      {"cobalt-steel-gear-wheel", 14},
+      {"cobalt-steel-bearing", 14},
+      {"advanced-circuit", 5},
+      {"fast-loader", 1},
+    }
+    data:extend({
+      {
+        type = "recipe",
+        name = "purple-loader",
+        enabled = "false",
+        energy_required = 5,
+        ingredients = {
+          {"titanium-plate", 10},
+          {"titanium-bearing", 14},
+          {"titanium-gear-wheel", 14},
+          {"processing-unit", 5},
+          {"express-loader", 1},
+        },
+        result = "purple-loader"
+      },
+      {
+        type = "recipe",
+        name = "green-loader",
+        enabled = "false",
+        energy_required = 5,
+        ingredients = {
+          {"nitinol-alloy", 10},
+          {"nitinol-bearing", 14},
+          {"nitinol-gear-wheel", 14},
+          {"advanced-processing-unit", 5},
+          {"purple-loader", 1},
+        },
+        result = "green-loader"
+      },
+    })
+  else
+    yellowLoader.ingredients = {
+      {"iron-plate", 10},
+      {"electronic-circuit", 5},
+      {"inserter", 5},
+      {"transport-belt", 2},
+    }
+    redLoader.ingredients = {
+      {"steel-plate", 15},
+      {"iron-gear-wheel", 20},
+      {"electronic-circuit", 5},
+      {"loader", 1},
+    }
+    blueLoader.category = nil
+    blueLoader.ingredients = {
+      {"steel-plate", 15},
+      {"iron-gear-wheel", 20},
+      {"advanced-circuit", 5},
+      {"fast-loader", 1},
+    }
+    data:extend({
+      {
+        type = "recipe",
+        name = "purple-loader",
+        enabled = "false",
+        energy_required = 5,
+        ingredients = {
+          {"steel-plate", 15},
+          {"iron-gear-wheel", 20},
+          {"processing-unit", 5},
+          {"express-loader", 1},
+        },
+        result = "purple-loader"
+      },
+      {
+        type = "recipe",
+        name = "green-loader",
+        enabled = "false",
+        energy_required = 5,
+        ingredients = {
+          {"steel-plate", 15},
+          {"iron-gear-wheel", 20},
+          {"processing-unit", 10},
+          {"purple-loader", 1},
+        },
+        result = "green-loader"
+      },
+    })
   end
 end
