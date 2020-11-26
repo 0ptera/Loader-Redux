@@ -133,24 +133,24 @@ function make_loader_entity(name, belt, tint, next_upgrade)
           scale = 0.5,
         }
       },
-      -- Lights (Implemented in 1.1, subject to some adjustments)
-      -- {
-      --   filename= "__LoaderRedux__/graphics/entity/loader-light.png",
-      --   priority = "extra-high",
-      --   width = 94,
-      --   height = 79,
-      --   shift = util.by_pixel(10, 2),
-      --   draw_as_light = true,
-      --   hr_version = {
-      --     filename= "__LoaderRedux__/graphics/entity/hr-loader-light.png",
-      --     priority = "extra-high",
-      --     width = 186,
-      --     height = 155,
-      --     shift = util.by_pixel(9.5, 1.5),
-      --     draw_as_light = true,
-      --     scale = 0.5,
-      --   }
-      -- },
+      -- Lights
+      {
+        filename= "__LoaderRedux__/graphics/entity/loader-lights.png",
+        priority = "extra-high",
+        width = 94,
+        height = 79,
+        shift = util.by_pixel(10, 2),
+        draw_as_light = true,
+        hr_version = {
+          filename= "__LoaderRedux__/graphics/entity/hr-loader-lights.png",
+          priority = "extra-high",
+          width = 186,
+          height = 155,
+          shift = util.by_pixel(9.5, 1.5),
+          draw_as_light = true,
+          scale = 0.5,
+        }
+      },
     }
   }
   loader.structure.direction_out = {
@@ -209,26 +209,26 @@ function make_loader_entity(name, belt, tint, next_upgrade)
           scale = 0.5,
         }
       },
-      -- Lights (Implemented in 1.1, subject to some adjustments)
-      -- {
-      --   filename= "__LoaderRedux__/graphics/entity/loader-light.png",
-      --   priority = "extra-high",
-      --   y = 79,
-      --   width = 94,
-      --   height = 79,
-      --   shift = util.by_pixel(10, 2),
-      --   draw_as_light = true,
-      --   hr_version = {
-      --     filename= "__LoaderRedux__/graphics/entity/hr-loader-light.png",
-      --     priority = "extra-high",
-      --     y = 155,
-      --     width = 186,
-      --     height = 155,
-      --     shift = util.by_pixel(9.5, 1.5),
-      --     draw_as_light = true,
-      --     scale = 0.5,
-      --   }
-      -- },
+      -- Lights
+      {
+        filename= "__LoaderRedux__/graphics/entity/loader-lights.png",
+        priority = "extra-high",
+        y = 79,
+        width = 94,
+        height = 79,
+        shift = util.by_pixel(10, 2),
+        draw_as_light = true,
+        hr_version = {
+          filename= "__LoaderRedux__/graphics/entity/hr-loader-lights.png",
+          priority = "extra-high",
+          y = 155,
+          width = 186,
+          height = 155,
+          shift = util.by_pixel(9.5, 1.5),
+          draw_as_light = true,
+          scale = 0.5,
+        }
+      },
     }
   }
 
