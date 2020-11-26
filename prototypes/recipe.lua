@@ -4,52 +4,70 @@
  * See LICENSE.md in the project directory for license information.
 --]]
 
-local yellowLoader = data.raw.recipe["loader"]
-yellowLoader.energy_required = 5
-yellowLoader.ingredients = {
-  {"iron-plate", 10},
-  {"electronic-circuit", 10},
-  {"inserter", 5},
-  {"transport-belt", 5},
-}
-
-local redLoader = data.raw.recipe["fast-loader"]
-redLoader.energy_required = 5
-redLoader.ingredients = {
-  {"iron-gear-wheel", 20},
-  {"electronic-circuit", 20},
-  {"advanced-circuit", 1},
-  {"loader", 1},
-}
-
-local blueLoader = data.raw.recipe["express-loader"]
-blueLoader.energy_required = 5
-blueLoader.category = "crafting-with-fluid"
-blueLoader.ingredients = {
-  {"iron-gear-wheel", 20},
-  {"advanced-circuit", 20},
-  {"fast-loader", 1},
-  {type="fluid", name="lubricant", amount=80},
-}
+data:extend({
+  {
+    type = "recipe",
+    name = "loader",
+    enabled = false,
+    hidden = false,
+    energy_required = 5,
+    ingredients = {
+      {"iron-plate", 10},
+      {"electronic-circuit", 10},
+      {"inserter", 5},
+      {"transport-belt", 5},
+    },
+    result = "loader"
+  },
+  {
+    type = "recipe",
+    name = "fast-loader",
+    enabled = false,
+    hidden = false,
+    energy_required = 5,
+    ingredients = {
+      {"iron-gear-wheel", 20},
+      {"electronic-circuit", 20},
+      {"advanced-circuit", 1},
+      {"loader", 1},
+    },
+    result = "fast-loader"
+  },
+  {
+    type = "recipe",
+    name = "express-loader",
+    category = "crafting-with-fluid",
+    enabled = false,
+    hidden = false,
+    energy_required = 5,
+    ingredients = {
+      {"iron-gear-wheel", 20},
+      {"advanced-circuit", 20},
+      {"fast-loader", 1},
+      {type="fluid", name="lubricant", amount=80},
+    },
+    result = "express-loader"
+  },
+})
 
 
 -- boblogistics and bobplates change all recipes
 if mods["boblogistics"] then
   if mods["bobplates"] then
-    yellowLoader.ingredients = {
+    data.raw.recipe["loader"].ingredients = {
       {"tin-plate", 10},
       {"electronic-circuit", 5},
       {"inserter", 5},
       {"transport-belt", 2},
     }
-    redLoader.ingredients = {
+    data.raw.recipe["fast-loader"].ingredients = {
       {"bronze-alloy", 10},
       {"steel-gear-wheel", 14},
       {"electronic-circuit", 5},
       {"loader", 1},
     }
-    blueLoader.category = nil
-    blueLoader.ingredients = {
+    data.raw.recipe["express-loader"].category = nil
+    data.raw.recipe["express-loader"].ingredients = {
       {"aluminium-plate", 10},
       {"cobalt-steel-gear-wheel", 14},
       {"cobalt-steel-bearing", 14},
@@ -87,20 +105,20 @@ if mods["boblogistics"] then
       },
     })
   else
-    yellowLoader.ingredients = {
+    data.raw.recipe["loader"].ingredients = {
       {"iron-plate", 10},
       {"electronic-circuit", 5},
       {"inserter", 5},
       {"transport-belt", 2},
     }
-    redLoader.ingredients = {
+    data.raw.recipe["fast-loader"].ingredients = {
       {"steel-plate", 15},
       {"iron-gear-wheel", 20},
       {"electronic-circuit", 5},
       {"loader", 1},
     }
-    blueLoader.category = nil
-    blueLoader.ingredients = {
+    data.raw.recipe["express-loader"].category = nil
+    data.raw.recipe["express-loader"].ingredients = {
       {"steel-plate", 15},
       {"iron-gear-wheel", 20},
       {"advanced-circuit", 5},
