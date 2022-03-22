@@ -100,13 +100,13 @@ local function getLoaderSearchData(wagon, direction)
 
   --game.print("Checking " .. direction .. " with wagon bounds of {{" .. min_x .. " , " .. min_y .. "}, {" .. max_x .. " , " .. max_y .. "}}")
   if direction == "west" then
-    return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
+    return {type = "loader", name = global.supported_loader_names, area = {{wagon.position.x+min_x-0.9, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x-0.1, wagon.position.y+max_y-0.2}}} --was -1.5, -2.2, +0.5, +2.2
   elseif direction == "east" then
-    return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
+    return {type = "loader", name = global.supported_loader_names, area = {{wagon.position.x+min_x+1.1, wagon.position.y+min_y+0.2}, {wagon.position.x+max_x+0.9, wagon.position.y+max_y-0.2}}} --was +0.5, -2.2, +1.5, +2.2
   elseif direction == "north" then
-    return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
+    return {type = "loader", name = global.supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x-0.9}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x-1.1}}} --was -2.2, -1.5, +2.2, -0.5
   elseif direction == "south" then
-    return {type = "loader", name = supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
+    return {type = "loader", name = global.supported_loader_names, area = {{wagon.position.x+min_y+0.2, wagon.position.y+min_x+1.1}, {wagon.position.x+max_y-0.2, wagon.position.y+max_x+0.9}}} --was -2.2, +0.5, +2.2, +1.5
   end
 end
 

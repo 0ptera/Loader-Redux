@@ -15,32 +15,32 @@ local wagon_handler = require("script.wagon_handler")
 local use_train = settings.global["loader-use-trains"].value
 local use_snapping = settings.global["loader-snapping"].value
 
-local supported_loaders = {} -- dictionary indexed by supported entity name
-local supported_loader_names = {}  -- list of loader names for find_entities_filtered
+-- local supported_loaders = {} -- dictionary indexed by supported entity name
+-- local supported_loader_names = {}  -- list of loader names for find_entities_filtered
 
 -- remote interface to add and remove loaders from whitelist
 remote.add_interface("loader-redux",  {
   -- add loader name if it doesn't already exist
   add_loader = function(name)
     if name then
-      supported_loaders[name] = true
-      supported_loader_names = {}
-      for k, v in pairs(supported_loaders) do
-        table.insert(supported_loader_names, k)
+      global.supported_loaders[name] = true
+      global.supported_loader_names = {}
+      for k, v in pairs(global.supported_loaders) do
+        table.insert(global.supported_loader_names, k)
       end
-      -- log("supported_loaders: "..serpent.block(supported_loaders) )
+      -- log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
     end
   end,
 
   -- remove loader name
   remove_loader = function(name)
     if name then
-      supported_loaders[name] = nil
-      supported_loader_names = {}
-      for k, v in pairs(supported_loaders) do
-        table.insert(supported_loader_names, k)
+      global.supported_loaders[name] = nil
+      global.supported_loader_names = {}
+      for k, v in pairs(global.supported_loaders) do
+        table.insert(global.supported_loader_names, k)
       end
-      -- log("supported_loaders: "..serpent.block(supported_loaders) )
+      -- log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
     end
   end
 })
@@ -72,7 +72,7 @@ end
 --Check for loaders around rotated entities that may need snapping
 script.on_event(defines.events.on_player_rotated_entity, function(event)
   if use_snapping then
-    snapping.check_for_loaders(event, supported_loader_names)
+    snapping.check_for_loaders(event)
   end
 end)
 
@@ -80,7 +80,7 @@ end)
 --Check anything else built and check for loaders around it they may need correcting.
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function(event)
   local entity = event.created_entity
-  if entity.type == "loader" and supported_loaders[entity.name] then
+  if entity.type == "loader" and global.supported_loaders[entity.name] then
     if use_snapping then
       snapping.snap_loader(entity, event)
     end
@@ -100,7 +100,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
       script.on_event(defines.events.on_tick, nil)
     end
   elseif use_snapping then
-    snapping.check_for_loaders(event, supported_loader_names)
+    snapping.check_for_loaders(event)
   end
 end)
 
@@ -180,7 +180,8 @@ function init_events()
 end
 
 function init_supported_loaders()
-  supported_loaders = {} -- loader name dictionary for fast access on name base
+  global.supported_loaders = {} -- dictionary indexed by supported entity name
+  global.supported_loader_names = {}  -- list of loader names for find_entities_filtered
 
   -- use interface to fill whitelist as test
   remote.call("loader-redux", "add_loader", "loader")
@@ -191,7 +192,6 @@ function init_supported_loaders()
 end
 
 script.on_load(function()
-  init_supported_loaders()
   wagon_handler.create_wagon_validators(use_train)
   init_events()
 end)
@@ -214,6 +214,7 @@ end)
 
 -- rescan all loader-wagon connections in case changing mods removed some wagons
 script.on_configuration_changed(function(data)
+  init_supported_loaders()
   wagon_handler.create_wagon_validators(use_train)
   global.wagons = {}
   global.loader_wagon_map = {}

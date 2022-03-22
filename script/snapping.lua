@@ -82,14 +82,14 @@ local function snap_loader_to_target(loader, entity, event)
 end
 
 -- returns loaders next to a given entity
-local function find_loader_by_entity(entity, supported_loader_names)
+local function find_loader_by_entity(entity)
   local position = entity.position
   local box = entity.prototype.selection_box
   local area = {
     {position.x + box.left_top.x-1, position.y + box.left_top.y-1},
     {position.x + box.right_bottom.x + 1, position.y + box.right_bottom.y + 1}
   }
-  return entity.surface.find_entities_filtered{type="loader", name=supported_loader_names, area=area, force=entity.force}
+  return entity.surface.find_entities_filtered{type="loader", name=global.supported_loader_names, area=area, force=entity.force}
 end
 
 -- returns entities in front and behind a given loader
@@ -111,10 +111,10 @@ local function find_entity_by_loader(loader)
 end
 
 -- called when entity was rotated or non loader was built
-function snapping.check_for_loaders(event, supported_loader_names)
+function snapping.check_for_loaders(event)
   local entity = event.created_entity or event.entity
   if snapTypes[entity.type] then
-    local loaders = find_loader_by_entity(entity, supported_loader_names)
+    local loaders = find_loader_by_entity(entity)
     for _, loader in pairs(loaders) do
     local entities = find_entity_by_loader(loader)
       for _, ent in pairs(entities) do
@@ -126,7 +126,7 @@ function snapping.check_for_loaders(event, supported_loader_names)
 
     -- also scan other exit of underground belt
     if entity.type == "underground-belt" and entity.neighbours then
-      local loaders = find_loader_by_entity(entity.neighbours, supported_loader_names)
+      local loaders = find_loader_by_entity(entity.neighbours)
       for _, loader in pairs(loaders) do
       local entities = find_entity_by_loader(loader)
         for _, ent in pairs(entities) do
