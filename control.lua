@@ -23,24 +23,26 @@ remote.add_interface("loader-redux",  {
   -- add loader name if it doesn't already exist
   add_loader = function(name)
     if name then
+      global.supported_loaders = global.supported_loaders or {} -- allows on_init of API subscribers be called before on_configuration_changed resets everything
       global.supported_loaders[name] = true
       global.supported_loader_names = {}
       for k, v in pairs(global.supported_loaders) do
         table.insert(global.supported_loader_names, k)
       end
-      -- log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
+      log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
     end
   end,
 
   -- remove loader name
   remove_loader = function(name)
     if name then
+      global.supported_loaders = global.supported_loaders or {} -- allows on_init of API subscribers be called before on_configuration_changed resets everything
       global.supported_loaders[name] = nil
       global.supported_loader_names = {}
       for k, v in pairs(global.supported_loaders) do
         table.insert(global.supported_loader_names, k)
       end
-      -- log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
+      log("global.supported_loaders: "..serpent.block(global.supported_loaders) )
     end
   end
 })
@@ -180,15 +182,10 @@ function init_events()
 end
 
 function init_supported_loaders()
-  global.supported_loaders = {} -- dictionary indexed by supported entity name
-  global.supported_loader_names = {}  -- list of loader names for find_entities_filtered
-
-  -- use interface to fill whitelist as test
+  global.supported_loaders = {} -- clean old prototype names, API subscribers should be called afterwards
   remote.call("loader-redux", "add_loader", "loader")
   remote.call("loader-redux", "add_loader", "fast-loader")
   remote.call("loader-redux", "add_loader", "express-loader")
-  remote.call("loader-redux", "add_loader", "purple-loader")
-  remote.call("loader-redux", "add_loader", "green-loader")
 end
 
 script.on_load(function()

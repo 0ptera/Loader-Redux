@@ -5,13 +5,14 @@
 --]]
 
 local flib = require('__flib__.data-util')
+local lr_make_loader = {}
 
 --- create loader item
 -- @tparam String name
 -- @tparam String subgroup
 -- @tparam String order
 -- @tparam Types.Color[] tint
-function make_loader_item(name, subgroup, order, tint)
+function lr_make_loader.make_loader_item(name, subgroup, order, tint)
   return{
     type = "item",
     name = name,
@@ -42,7 +43,7 @@ end
 -- @tparam Prototype.TransportBelt[] belt
 -- @tparam Types.Color[] tint
 -- @tparam String|nil next_upgrade
-function make_loader_entity(name, belt, tint, next_upgrade)
+function lr_make_loader.make_loader_entity(name, belt, tint, next_upgrade)
   local loader = data.raw["loader"][name] or flib.copy_prototype(data.raw["loader"]["loader"], name)
   loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
   loader.icons = {
@@ -242,3 +243,4 @@ function make_loader_entity(name, belt, tint, next_upgrade)
   return loader
 end
 
+return lr_make_loader

@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.0
+Date: 2022-04-18
+  Features:
+    - added readme with API documentation
+  Changes:
+    - rewrite of Data stage API to be in line with flib usage
+    - Loaders for Bobs Logistics are now a separate mod to show and test the API
+  Bugfixes:
+    - Control stage API could be called before tables where initialized
+---------------------------------------------------------------------------------------------------
 Version: 1.7.2
 Date: 2022-03-22
   Bugfixes:
