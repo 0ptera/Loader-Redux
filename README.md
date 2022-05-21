@@ -29,13 +29,13 @@ loader_redux.make_loader_entity(name, belt, tint, next_upgrade)
 ```
 
 # API Control Stage
-register loader for snapping and train interaction
+register loader for snapping and train interaction in on_init and on_configuration_changed
 ```lua
 remote.call("loader-redux", "add_loader", name)
 -- @tparam String name
 ```
 
-unregister loader for snapping and train interaction
+unregister loader for snapping and train interaction in on_init and on_configuration_changed
 ```lua
 remote.call("loader-redux", "remove_loader", name)
 -- @tparam String name
