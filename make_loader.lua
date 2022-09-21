@@ -46,6 +46,7 @@ end
 function lr_make_loader.make_loader_entity(name, belt, tint, next_upgrade)
   local loader = data.raw["loader"][name] or flib.copy_prototype(data.raw["loader"]["loader"], name)
   loader.flags = {"placeable-neutral", "placeable-player", "player-creation", "fast-replaceable-no-build-while-moving"}
+  loader.collision_mask = {"floor-layer", "object-layer", "transport-belt-layer", "water-tile"} -- match belt collision layers
   loader.icons = {
     -- Base
     {

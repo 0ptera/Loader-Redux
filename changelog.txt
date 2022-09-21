@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.1
+Date: 2022-09-21
+  Bugfixes:
+    - make_loader_entity uses floor-layer instead of item-layer in collision mask to match belts
+---------------------------------------------------------------------------------------------------
 Version: 1.8.0
 Date: 2022-04-18
   Features:
