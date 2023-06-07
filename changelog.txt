@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.9.0
+Date: 2023-06-07
+  Features:
+    - added startup setting for disabling loader interaction with trains
+  Changes:
+    - removed train handling, was added in base 1.1.75
+    - removed 0.17 animations
+---------------------------------------------------------------------------------------------------
 Version: 1.8.1
 Date: 2022-09-21
   Bugfixes:
