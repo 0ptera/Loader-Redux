@@ -2,7 +2,7 @@
 Version: 1.9.1
 Date: 2023-06-13
   Bugfixes:
-    - render layer was removed alongside 0.17 animations
+    - render layer was removed alongside 0.17 animations #57
 ---------------------------------------------------------------------------------------------------
 Version: 1.9.0
 Date: 2023-06-07
