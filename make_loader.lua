@@ -237,10 +237,10 @@ function lr_make_loader.make_loader_entity(name, belt, tint, next_upgrade)
   loader.speed = belt.speed
   loader.next_upgrade = next_upgrade
   loader.allow_rail_interaction = settings.startup["loader-rail-interaction"].value
+  loader.structure_render_layer = "object"
 
   -- -- 0.17 animations
   -- loader.belt_animation_set = belt.belt_animation_set
-  -- loader.structure_render_layer = "object"
 
   return loader
 end
